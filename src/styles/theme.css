@@ -1,0 +1,61 @@
+/**
+ * Food Forecast design tokens — swap hex values from Figma inspect when available.
+ * Components use Tailwind token utilities only; raw values live here.
+ */
+@theme {
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand */
+  --color-brand-green: #1fa055;
+  --color-brand-green-hover: #1b8c4a;
+  --color-brand-dark: #181a1b;
+  --color-brand-gold: #f0b429;
+
+  /* Semantic */
+  --color-danger: #dc2626;
+  --color-amber: #d9920a;
+
+  /* Surfaces */
+  --color-background: #f8f6f2;
+  --color-surface: #ffffff;
+  --color-border: #eceae5;
+
+  /* Text */
+  --color-foreground: #181a1b;
+  --color-muted: #6b7280;
+  --color-muted-foreground: #6b7280;
+
+  /* Aliases (legacy token names → brand system) */
+  --color-accent: var(--color-brand-green);
+  --color-accent-hover: var(--color-brand-green-hover);
+  --color-accent-foreground: #ffffff;
+  --color-accent-muted: #e8f7ee;
+
+  /* Confidence */
+  --color-confidence-high: var(--color-brand-green);
+  --color-confidence-medium: var(--color-amber);
+  --color-confidence-low: var(--color-danger);
+
+  /* Layout */
+  --spacing-sidebar: 15rem;
+  --spacing-page-x: 2rem;
+  --spacing-page-y: 1.5rem;
+  --spacing-stack-sm: 0.5rem;
+  --spacing-stack-md: 1rem;
+  --spacing-stack-lg: 1.5rem;
+  --spacing-card: 1rem;
+
+  /* Radius */
+  --radius-card: 1rem;
+  --radius-hero: 1.5rem;
+  --radius-badge: 0.5rem;
+  --radius-pill: 9999px;
+  --radius-brand: 0.5rem;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px 0 rgb(24 26 27 / 0.04);
+  --shadow-elevated: 0 8px 24px -4px rgb(24 26 27 / 0.08);
+  --shadow-sm: 0 1px 3px 0 rgb(24 26 27 / 0.06);
+}

@@ -3,5 +3,14 @@ export { CategoryBadge, type CategoryBadgeProps } from './CategoryBadge'
 export { ChangeBadge, type ChangeBadgeProps } from './ChangeBadge'
 export { CommodityCard, type CommodityCardProps } from './CommodityCard'
 export { ConfidenceTag, type ConfidenceTagProps } from './ConfidenceTag'
+export { GuestChip, type GuestChipProps } from './GuestChip'
+export {
+  IconSectionHeader,
+  PageHeader,
+  SectionLabel,
+  type IconSectionHeaderProps,
+  type PageHeaderProps,
+  type SectionLabelProps,
+} from './PageHeader'
 export { SearchBar, type SearchBarProps } from './SearchBar'
 export { StatCard, type StatCardProps } from './StatCard'

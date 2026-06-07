@@ -18,17 +18,19 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        'flex items-start justify-between gap-6',
+        'flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6',
         className,
       )}
     >
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <p className="text-sm text-muted">{greeting}</p>
-        <h1 className="font-display mt-0.5 text-[1.65rem] leading-tight text-foreground">
+        <h1 className="font-display mt-0.5 text-xl leading-tight text-foreground sm:text-[1.65rem]">
           {title}
         </h1>
       </div>
-      {action}
+      {action ? (
+        <div className="flex shrink-0 justify-end sm:justify-start">{action}</div>
+      ) : null}
     </header>
   )
 }
@@ -68,7 +70,11 @@ export function IconSectionHeader({
 }: IconSectionHeaderProps) {
   return (
     <div className={cn('flex items-center gap-2.5', className)}>
-      <Icon className={cn('size-[18px] text-brand-green', iconClassName)} strokeWidth={2} aria-hidden />
+      <Icon
+        className={cn('size-[18px] shrink-0 text-brand-green', iconClassName)}
+        strokeWidth={2}
+        aria-hidden
+      />
       <h2 className={cn('text-base font-bold text-foreground', titleClassName)}>{title}</h2>
     </div>
   )

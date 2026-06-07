@@ -10,16 +10,29 @@
 @layer base {
   html {
     font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     margin: 0;
     min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   #root {
     min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  input,
+  button,
+  select,
+  textarea {
+    touch-action: manipulation;
   }
 }
 
@@ -53,6 +66,12 @@
   .page-stack {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-section);
+    gap: 1.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-stack {
+      gap: var(--spacing-section);
+    }
   }
 }

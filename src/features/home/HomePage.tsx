@@ -18,38 +18,38 @@ export function HomePage() {
 
   return (
     <div className="page-stack">
-      <PageHeader title="Welcome to Food Forecast" action={<GuestChip />} />
+      <PageHeader title="Welcome to Food Forecast" action={<GuestChip compact />} />
 
       <section
         className={cn(
-          'relative min-h-[25rem] overflow-hidden rounded-hero',
+          'relative min-h-[21rem] overflow-hidden rounded-card sm:min-h-[23rem] sm:rounded-hero lg:min-h-[25rem]',
           'bg-cover bg-center',
         )}
         style={{ backgroundImage: `url(${heroMarketImage})` }}
       >
         <div
-          className="absolute inset-0 bg-linear-to-r from-brand-dark/80 via-brand-dark/50 to-brand-dark/5"
+          className="absolute inset-0 bg-linear-to-r from-brand-dark/90 via-brand-dark/65 to-brand-dark/30 sm:from-brand-dark/80 sm:via-brand-dark/50 sm:to-brand-dark/5"
           aria-hidden
         />
-        <div className="relative flex min-h-[25rem] flex-col px-9 py-9 md:px-10 md:py-10">
-          <span className="inline-flex w-fit items-center gap-2 rounded-pill bg-brand-dark/60 px-3.5 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm">
+        <div className="relative flex min-h-[21rem] flex-col px-5 py-6 sm:min-h-[23rem] sm:px-8 sm:py-8 md:px-10 md:py-10 lg:min-h-[25rem]">
+          <span className="inline-flex w-fit max-w-full items-center gap-2 rounded-pill bg-brand-dark/60 px-3 py-1.5 text-[10px] font-medium text-white backdrop-blur-sm sm:px-3.5 sm:text-[11px]">
             <Sparkles className="size-3.5 shrink-0 text-brand-gold" strokeWidth={2} aria-hidden />
-            Forecasts update across 47 markets
+            <span className="truncate">Forecasts update across 47 markets</span>
           </span>
 
-          <div className="mt-auto flex w-full max-w-2xl flex-col items-start pt-8">
-            <h2 className="font-display text-[2.35rem] leading-[1.12] tracking-tight text-white md:text-[2.5rem]">
+          <div className="mt-auto flex w-full flex-col items-start pt-6 sm:max-w-2xl sm:pt-8">
+            <h2 className="font-display text-[1.65rem] leading-[1.15] tracking-tight text-white sm:text-[2.15rem] md:text-[2.35rem] lg:text-[2.5rem]">
               Stop guessing. Start
               <br />
               <span className="text-brand-gold">planning your market.</span>
             </h2>
 
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-white/85">
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85 sm:mt-4">
               See where the price of tomatoes, rice, yam and the rest of your basket is heading —
               weeks ahead, with the human reasons behind every move. Free, forever.
             </p>
 
-            <div className="mt-8 w-full max-w-[34rem]">
+            <div className="mt-6 w-full sm:mt-8 sm:max-w-[34rem]">
               <SearchBar
                 value={searchQuery}
                 onChange={setSearchQuery}
@@ -60,7 +60,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         <StatCard
           label="Rising"
           value={marketStats.risingCount}
@@ -89,8 +89,8 @@ export function HomePage() {
       </section>
 
       <section>
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-          <div>
+        <div className="mb-4 flex flex-col gap-2 sm:mb-5 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-3">
+          <div className="min-w-0">
             <h2 className="text-lg font-bold tracking-tight text-foreground">
               At-a-glance market
             </h2>
@@ -98,10 +98,10 @@ export function HomePage() {
               Tap any commodity to see its 30-day forecast
             </p>
           </div>
-          <p className="text-sm font-medium text-muted">{commodities.length} items</p>
+          <p className="text-sm font-medium text-muted sm:shrink-0">{commodities.length} items</p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {commodities.map((commodity) => (
             <CommodityCard
               key={commodity.id}

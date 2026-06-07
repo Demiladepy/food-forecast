@@ -35,7 +35,7 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
       }
       className={cn(
         'group cursor-pointer overflow-hidden rounded-card border border-border bg-surface shadow-sm',
-        'transition-all duration-200 hover:-translate-y-1 hover:shadow-elevated',
+        'transition-all duration-200 active:scale-[0.99] sm:hover:-translate-y-1 sm:hover:shadow-elevated',
         className,
       )}
     >
@@ -43,7 +43,7 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
         <img
           src={commodity.image}
           alt={commodity.name}
-          className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          className="size-full object-cover transition-transform duration-300 sm:group-hover:scale-[1.02]"
           loading="lazy"
         />
         <CategoryBadge category={commodity.category} className="absolute left-3 top-3" />
@@ -81,7 +81,7 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
           <button
             type="button"
             onClick={handleShareClick}
-            className="inline-flex items-center gap-1 text-[11px] font-medium text-muted transition-colors hover:text-foreground"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1 px-2 text-[11px] font-medium text-muted transition-colors hover:text-foreground active:text-foreground sm:min-h-0 sm:min-w-0 sm:px-0"
           >
             <Share2 className="size-3.5" strokeWidth={1.75} aria-hidden />
             Share

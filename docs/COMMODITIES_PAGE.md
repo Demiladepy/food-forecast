@@ -99,11 +99,20 @@ import { CommoditiesPage } from './features/commodities/CommoditiesPage'
 { path: 'commodities', element: <CommoditiesPage /> },
 ```
 
+## Mobile responsiveness
+
+- **Navigation:** Sidebar is desktop-only (`lg+`). On mobile/tablet, use the hamburger menu → slide-out drawer (see `AppShell.tsx`).
+- **Page padding:** `px-4` mobile → `px-8` desktop; safe-area insets for iOS notch/home bar.
+- **Header:** `PageHeader` stacks vertically on small screens; use `<GuestChip compact />` to save width.
+- **Grid:** `grid-cols-1` → `sm:grid-cols-2` → `lg:grid-cols-3` (same as Home).
+- **Touch targets:** Minimum ~44px height on interactive elements (buttons, nav links, card actions).
+
 ## Checklist before opening PR
 
 - [ ] `/commodities` loads inside `AppShell` with active nav pill
 - [ ] Grid matches Home card layout (responsive 1 / 2 / 3 columns)
 - [ ] Guest chip + header align with Methodology page
+- [ ] Tested on mobile viewport (375px) and tablet (768px)
 - [ ] Item count label matches design copy
 - [ ] `npm run build` passes with no TypeScript errors
 - [ ] No new hardcoded colors; tokens only

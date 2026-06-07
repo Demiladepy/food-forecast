@@ -27,7 +27,7 @@
   .font-display {
     font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
   }
 
   .rounded-card {
@@ -44,5 +44,15 @@
 
   .rounded-badge {
     border-radius: var(--radius-badge);
+  }
+
+  .shadow-search {
+    box-shadow: var(--shadow-search);
+  }
+
+  .page-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-section);
   }
 }

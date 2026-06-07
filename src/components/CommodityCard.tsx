@@ -34,55 +34,56 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
           : undefined
       }
       className={cn(
-        'cursor-pointer overflow-hidden rounded-card border border-border bg-surface shadow-sm',
-        'transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elevated',
+        'group cursor-pointer overflow-hidden rounded-card border border-border bg-surface shadow-sm',
+        'transition-all duration-200 hover:-translate-y-1 hover:shadow-elevated',
         className,
       )}
     >
-      <div className="relative h-36">
+      <div className="relative h-40 overflow-hidden">
         <img
           src={commodity.image}
           alt={commodity.name}
-          className="size-full object-cover"
+          className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-brand-dark/20 to-transparent" />
         <CategoryBadge category={commodity.category} className="absolute left-3 top-3" />
         <ChangeBadge changePct={commodity.changePct} className="absolute right-3 top-3" />
       </div>
 
       <div className="p-4">
-        <h3 className="font-bold text-foreground">{commodity.name}</h3>
-        <p className="mt-0.5 text-sm text-muted">{commodity.market}</p>
+        <h3 className="text-[15px] font-bold leading-snug text-foreground">{commodity.name}</h3>
+        <p className="mt-0.5 text-xs text-muted">{commodity.market}</p>
 
-        <div className="mt-4 grid grid-cols-2 gap-4">
+        <div className="mt-4 grid grid-cols-2 gap-3">
           <div>
-            <p className="text-[10px] font-semibold tracking-wider text-muted uppercase">Today</p>
-            <p className="mt-1 text-lg font-bold text-foreground">
+            <p className="text-[10px] font-semibold tracking-[0.08em] text-muted uppercase">
+              Today
+            </p>
+            <p className="mt-1 text-lg font-bold leading-tight text-foreground">
               {formatNGN(commodity.todayPrice)}
             </p>
-            <p className="text-xs text-muted">{commodity.unit}</p>
+            <p className="mt-0.5 text-[11px] text-muted">{commodity.unit}</p>
           </div>
           <div className="text-right">
-            <p className="text-[10px] font-semibold tracking-wider text-muted uppercase">
+            <p className="text-[10px] font-semibold tracking-[0.08em] text-muted uppercase">
               In 4 weeks
             </p>
-            <p className="mt-1 text-lg font-bold text-foreground">
+            <p className="mt-1 text-lg font-bold leading-tight text-foreground">
               {formatNGN(commodity.forecastPrice)}
             </p>
           </div>
         </div>
 
-        <hr className="my-4 border-border" />
+        <div className="my-3.5 h-px bg-border" />
 
         <div className="flex items-center justify-between">
           <ConfidenceTag confidence={commodity.confidence} />
           <button
             type="button"
             onClick={handleShareClick}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-muted transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 text-[11px] font-medium text-muted transition-colors hover:text-foreground"
           >
-            <Share2 className="size-3.5" aria-hidden />
+            <Share2 className="size-3.5" strokeWidth={1.75} aria-hidden />
             Share
           </button>
         </div>

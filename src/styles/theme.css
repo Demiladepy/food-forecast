@@ -20,6 +20,7 @@
   /* Surfaces */
   --color-background: #f8f6f2;
   --color-surface: #ffffff;
+  --color-surface-soft: #f3f1eb;
   --color-border: #eceae5;
 
   /* Text */
@@ -27,7 +28,7 @@
   --color-muted: #6b7280;
   --color-muted-foreground: #6b7280;
 
-  /* Aliases (legacy token names → brand system) */
+  /* Aliases */
   --color-accent: var(--color-brand-green);
   --color-accent-hover: var(--color-brand-green-hover);
   --color-accent-foreground: #ffffff;
@@ -41,7 +42,8 @@
   /* Layout */
   --spacing-sidebar: 15rem;
   --spacing-page-x: 2rem;
-  --spacing-page-y: 1.5rem;
+  --spacing-page-y: 1.75rem;
+  --spacing-section: 2.5rem;
   --spacing-stack-sm: 0.5rem;
   --spacing-stack-md: 1rem;
   --spacing-stack-lg: 1.5rem;
@@ -49,13 +51,14 @@
 
   /* Radius */
   --radius-card: 1rem;
-  --radius-hero: 1.5rem;
+  --radius-hero: 1.75rem;
   --radius-badge: 0.5rem;
   --radius-pill: 9999px;
-  --radius-brand: 0.5rem;
+  --radius-brand: 0.625rem;
 
   /* Shadows */
   --shadow-card: 0 1px 2px 0 rgb(24 26 27 / 0.04);
-  --shadow-elevated: 0 8px 24px -4px rgb(24 26 27 / 0.08);
+  --shadow-elevated: 0 10px 28px -6px rgb(24 26 27 / 0.1);
   --shadow-sm: 0 1px 3px 0 rgb(24 26 27 / 0.06);
+  --shadow-search: 0 12px 40px -8px rgb(24 26 27 / 0.18);
 }

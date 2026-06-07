@@ -1,6 +1,5 @@
 /**
  * CSS custom properties layer — mirrors @theme for non-Tailwind use.
- * Prefer Tailwind utilities in components; use var(--token) when needed.
  */
 :root {
   --brand-green: #1fa055;
@@ -13,12 +12,14 @@
 
   --bg: #f8f6f2;
   --surface: #ffffff;
+  --surface-soft: #f3f1eb;
   --border: #eceae5;
 
   --text: #181a1b;
   --muted: #6b7280;
 
   --radius-card: 1rem;
+  --radius-hero: 1.75rem;
   --radius-pill: 9999px;
   --radius-badge: 0.5rem;
 

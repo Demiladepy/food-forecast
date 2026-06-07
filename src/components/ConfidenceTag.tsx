@@ -20,7 +20,7 @@ const dotClasses: Record<Confidence, string> = {
 
 export function ConfidenceTag({ confidence, className }: ConfidenceTagProps) {
   return (
-    <span className={cn('inline-flex items-center gap-1.5 text-xs text-muted', className)}>
+    <span className={cn('inline-flex items-center gap-1.5 text-[11px] text-muted', className)}>
       <span
         className={cn('size-2 shrink-0 rounded-full', dotClasses[confidence])}
         aria-hidden

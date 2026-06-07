@@ -26,13 +26,13 @@ export function SearchBar({
     <form
       onSubmit={handleSubmit}
       className={cn(
-        'flex w-full items-center rounded-pill bg-surface p-2 shadow-elevated',
+        'flex w-full items-center gap-1 rounded-pill bg-surface p-1.5 shadow-search',
         className,
       )}
     >
-      <div className="flex min-w-0 flex-1 items-center gap-3 pl-4">
+      <div className="flex min-w-0 flex-1 items-center gap-3 pl-3.5">
         <Search
-          className="size-5 shrink-0 text-muted"
+          className="size-[18px] shrink-0 text-muted"
           strokeWidth={2}
           aria-hidden
         />
@@ -42,8 +42,8 @@ export function SearchBar({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
-            'min-w-0 flex-1 border-0 bg-transparent text-sm text-foreground outline-none',
-            'placeholder:text-muted/70',
+            'min-w-0 flex-1 border-0 bg-transparent py-2.5 text-sm text-foreground outline-none',
+            'placeholder:text-muted/75',
             'focus:ring-0',
           )}
           aria-label="Search food commodities"

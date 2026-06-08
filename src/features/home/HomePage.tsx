@@ -1,8 +1,8 @@
 import { Activity, Sparkles, TrendingDown, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
-import { CommodityCard, GuestChip, PageHeader, SearchBar, StatCard } from '../../components'
+import { CommodityCard, GuestChip, OptimizedImage, PageHeader, SearchBar, StatCard } from '../../components'
 import { commodities, marketStats } from '../../data/commodities'
-import { heroMarketImage } from '../../data/images'
+import { heroMarketImage, heroMarketImageFallback } from '../../data/images'
 import { cn } from '../../lib/utils'
 
 export function HomePage() {
@@ -23,10 +23,16 @@ export function HomePage() {
       <section
         className={cn(
           'relative min-h-[21rem] overflow-hidden rounded-card sm:min-h-[23rem] sm:rounded-hero lg:min-h-[25rem]',
-          'bg-cover bg-center',
         )}
-        style={{ backgroundImage: `url(${heroMarketImage})` }}
       >
+        <OptimizedImage
+          src={heroMarketImage}
+          fallbackSrc={heroMarketImageFallback}
+          alt=""
+          eager
+          className="absolute inset-0 size-full object-cover"
+          aria-hidden
+        />
         <div
           className="absolute inset-0 bg-linear-to-r from-brand-dark/90 via-brand-dark/65 to-brand-dark/30 sm:from-brand-dark/80 sm:via-brand-dark/50 sm:to-brand-dark/5"
           aria-hidden

@@ -12,5 +12,6 @@ export {
   type PageHeaderProps,
   type SectionLabelProps,
 } from './PageHeader'
+export { OptimizedImage, type OptimizedImageProps } from './OptimizedImage'
 export { SearchBar, type SearchBarProps } from './SearchBar'
 export { StatCard, type StatCardProps } from './StatCard'

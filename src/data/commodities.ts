@@ -1,4 +1,4 @@
-import { commodityImages, commodityPlaceholders, getCommodityImage } from './images'
+import { commodityImages, getCommodityImage } from './images'
 import type { Commodity, MarketSnapshotStats } from './types'
 
 export const commodities: Commodity[] = [
@@ -54,7 +54,7 @@ export const commodities: Commodity[] = [
     id: 'white-garri',
     name: 'White Garri',
     category: 'GRAINS',
-    image: commodityPlaceholders['white-garri'],
+    image: commodityImages['white-garri'],
     market: 'Oyingbo Market, Lagos',
     changePct: 3.2,
     todayPrice: 18_200,
@@ -66,7 +66,7 @@ export const commodities: Commodity[] = [
     id: 'brown-beans',
     name: 'Brown Beans',
     category: 'LEGUMES',
-    image: commodityPlaceholders['brown-beans'],
+    image: commodityImages['brown-beans'],
     market: 'Mile 12 Market, Lagos',
     changePct: -4.6,
     todayPrice: 2_400,

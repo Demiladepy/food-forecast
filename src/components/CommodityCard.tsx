@@ -1,11 +1,13 @@
 import { Share2 } from 'lucide-react'
 import type { KeyboardEvent, MouseEvent } from 'react'
+import { getCommodityImageFallback } from '../data/images'
 import type { Commodity } from '../data/types'
 import { formatNGN } from '../lib/formatters/money'
 import { cn } from '../lib/utils'
 import { CategoryBadge } from './CategoryBadge'
 import { ChangeBadge } from './ChangeBadge'
 import { ConfidenceTag } from './ConfidenceTag'
+import { OptimizedImage } from './OptimizedImage'
 
 export interface CommodityCardProps {
   commodity: Commodity
@@ -40,11 +42,11 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
       )}
     >
       <div className="relative h-40 overflow-hidden">
-        <img
+        <OptimizedImage
           src={commodity.image}
+          fallbackSrc={getCommodityImageFallback(commodity.id)}
           alt={commodity.name}
           className="size-full object-cover transition-transform duration-300 sm:group-hover:scale-[1.02]"
-          loading="lazy"
         />
         <CategoryBadge category={commodity.category} className="absolute left-3 top-3" />
         <ChangeBadge changePct={commodity.changePct} className="absolute right-3 top-3" />

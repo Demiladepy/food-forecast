@@ -32,10 +32,10 @@ export interface TrackRecordStat {
 }
 
 export const methodologyIntro =
-  'Food prices in Nigeria move for reasons that feel invisible — until they hit your pocket. Food Forecast turns daily wholesale data from real markets into a four-week outlook you can plan around, with plain-language explanations for every move.'
+  'Food prices in Nigeria move for reasons that feel invisible until they hit your pocket. Food Forecast turns daily wholesale data from real markets into a four-week outlook you can plan around, with plain-language explanations for every move.'
 
 export const whyWeBuiltParagraphs = [
-  'When fuel, FX, and harvest cycles all pull in different directions, guessing what tomatoes or rice will cost next month is not a budgeting strategy — it is a gamble.',
+  'When fuel, FX, and harvest cycles all pull in different directions, guessing what tomatoes or rice will cost next month is not a budgeting strategy. It is a gamble.',
   'We built this tool so households, small businesses, and anyone reporting on the economy can see the same transparent numbers, updated from markets people actually shop in.',
 ]
 
@@ -46,7 +46,7 @@ export const forecastSteps: MethodologyStep[] = [
   {
     id: 'collect',
     title: 'We collect',
-    body: 'Wholesale prices are gathered daily from 47 monitored markets across Nigeria — including Mile 12, Daleko, Oyingbo, Agege, and other major trading hubs in Lagos and beyond.',
+    body: 'Wholesale prices are gathered daily from 47 monitored markets across Nigeria, including Mile 12, Daleko, Oyingbo, Agege, and other major trading hubs in Lagos and beyond.',
   },
   {
     id: 'model',
@@ -56,7 +56,7 @@ export const forecastSteps: MethodologyStep[] = [
   {
     id: 'explain',
     title: 'We explain',
-    body: 'Every forecast is broken into human reasons — harvest cycles, diesel costs, FX pressure, security disruptions, and seasonal demand — so you know why a number moved, not just that it did.',
+    body: 'Every forecast is broken into human reasons: harvest cycles, diesel costs, FX pressure, security disruptions, and seasonal demand. You see why a number moved, not just that it did.',
   },
 ]
 
@@ -69,7 +69,7 @@ export const trustPoints: TrustPoint[] = [
   {
     lead: 'Every forecast is explained.',
     detail:
-      'Price moves are tied to real-world drivers you can verify — not a black box that only shows a percentage.',
+      'Price moves are tied to real-world drivers you can verify, not a black box that only shows a percentage.',
   },
   {
     lead: "We say when we don't know.",
@@ -79,7 +79,7 @@ export const trustPoints: TrustPoint[] = [
   {
     lead: 'No paywall, no ads, no trading.',
     detail:
-      'Food Forecast is a non-commercial project built at NitHub, University of Lagos — free to use, with no commercial strings attached.',
+      'Food Forecast is a non-commercial project built at NitHub, University of Lagos. It is free to use, with no commercial strings attached.',
   },
 ]
 
@@ -104,7 +104,7 @@ export const audienceFooter =
 export const testimonials: Testimonial[] = [
   {
     quote:
-      'I stopped buying tomatoes in bulk on the wrong week. The forecast told me to wait five days — I saved almost ₦4,000 on one basket.',
+      'I stopped buying tomatoes in bulk on the wrong week. The forecast told me to wait five days. I saved almost ₦4,000 on one basket.',
     name: 'Mrs. Adunni',
     role: 'Mother of three, Ikorodu',
   },
@@ -136,7 +136,7 @@ export const dataSources: DataSourceItem[] = [
   {
     id: 'independent',
     title: 'Independent',
-    body: 'No commercial partners, no government funding strings — built and reviewed at NitHub, University of Lagos.',
+    body: 'No commercial partners, no government funding strings. Built and reviewed at NitHub, University of Lagos.',
   },
 ]
 

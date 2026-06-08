@@ -78,7 +78,7 @@ function SidebarContent({ onNavigate, className }: SidebarContentProps) {
             Last synced 2 hours ago from 47 monitored markets
           </p>
           <p className="mt-2.5 text-[11px] leading-relaxed text-muted">
-            Free, non-commercial. Built for social good — we forecast, we don&apos;t trade.
+              Free, non-commercial. Built for social good. We forecast, we don&apos;t trade.
           </p>
         </div>
       </div>

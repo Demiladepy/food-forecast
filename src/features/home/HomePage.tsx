@@ -51,7 +51,7 @@ export function HomePage() {
             </h2>
 
             <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85 sm:mt-4">
-              See where the price of tomatoes, rice, yam and the rest of your basket is heading —
+              See where the price of tomatoes, rice, yam and the rest of your basket is heading,
               weeks ahead, with the human reasons behind every move. Free, forever.
             </p>
 

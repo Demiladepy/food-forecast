@@ -1,8 +1,8 @@
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/inter/700.css';
-@import '@fontsource/inter/800.css';
+@import '@fontsource/eb-garamond/400.css';
+@import '@fontsource/eb-garamond/500.css';
+@import '@fontsource/eb-garamond/600.css';
+@import '@fontsource/eb-garamond/700.css';
+@import '@fontsource/eb-garamond/800.css';
 @import 'tailwindcss';
 @import './styles/theme.css';
 @import './styles/tokens.css';
@@ -33,14 +33,15 @@
   select,
   textarea {
     touch-action: manipulation;
+    font-family: inherit;
   }
 }
 
 @layer utilities {
   .font-display {
     font-family: var(--font-display);
-    font-weight: 800;
-    letter-spacing: -0.035em;
+    font-weight: 700;
+    letter-spacing: 0;
   }
 
   .rounded-card {

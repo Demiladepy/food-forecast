@@ -131,7 +131,7 @@ export function MethodologyPage() {
             >
               <Quote className="size-5 text-brand-green" strokeWidth={2} aria-hidden />
               <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                &ldquo;{item.quote}&rdquo;
+                &quot;{item.quote}&quot;
               </p>
               <div className="mt-4 sm:mt-5">
                 <p className="text-sm font-bold text-foreground">{item.name}</p>

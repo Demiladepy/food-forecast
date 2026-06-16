@@ -108,7 +108,7 @@ export function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-          {commodities.map((commodity) => (
+          {commodities.slice(0, 8).map((commodity) => (
             <CommodityCard
               key={commodity.id}
               commodity={commodity}

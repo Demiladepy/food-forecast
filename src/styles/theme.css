@@ -4,8 +4,8 @@
  */
 @theme {
   /* Typography */
-  --font-sans: 'EB Garamond', Garamond, 'Times New Roman', serif;
-  --font-display: 'EB Garamond', Garamond, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Fraunces', serif;
 
   /* Brand */
   --color-brand-green: #1fa055;

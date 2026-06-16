@@ -91,6 +91,7 @@ export function AppShell() {
   const location = useLocation()
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileNavOpen(false)
   }, [location.pathname])
 

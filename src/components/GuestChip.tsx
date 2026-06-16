@@ -1,12 +1,14 @@
-import { Bell } from 'lucide-react'
-import { cn } from '../lib/utils'
+// import { Bell } from 'lucide-react'
+// import { cn } from '../lib/utils'
 
 export interface GuestChipProps {
   className?: string
   compact?: boolean
 }
 
-export function GuestChip({ className, compact = false }: GuestChipProps) {
+export function GuestChip(_props: GuestChipProps) {
+  return null
+  /*
   return (
     <div className={cn('flex shrink-0 items-center gap-2 sm:gap-2.5', className)}>
       <button
@@ -32,4 +34,5 @@ export function GuestChip({ className, compact = false }: GuestChipProps) {
       </div>
     </div>
   )
+  */
 }

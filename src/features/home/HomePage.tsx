@@ -59,7 +59,7 @@ export function HomePage() {
         <div className="relative flex min-h-[21rem] flex-col px-5 py-6 sm:min-h-[23rem] sm:px-8 sm:py-8 md:px-10 md:py-10 lg:min-h-[25rem]">
           <span className="inline-flex w-fit max-w-full items-center gap-2 rounded-pill bg-brand-dark/60 px-3 py-1.5 text-[10px] font-medium text-white backdrop-blur-sm sm:px-3.5 sm:text-[11px]">
             <Sparkles className="size-3.5 shrink-0 text-brand-gold" strokeWidth={2} aria-hidden />
-            <span className="truncate">Forecasts update across 47 markets</span>
+            <span className="truncate">Forecasts update across Nigerian markets</span>
           </span>
 
           <div className="mt-auto flex w-full flex-col items-start pt-6 sm:max-w-2xl sm:pt-8">

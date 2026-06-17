@@ -15,8 +15,9 @@ interface FoodResponse {
 
 interface PredictFoodPriceResponse {
   status: string;
+  commodity_id: string;
   request_echo: {
-    food_item: string;
+    commodity_id: string;
     state: string;
   };
   forecast_horizon: string;

@@ -61,8 +61,9 @@ Fetches the detailed price analysis, prediction model metrics, and XAI explanati
     "success": true,
     "data": {
       "status": "success",
+      "commodity_id": "tomato-tomato",
       "request_echo": {
-        "food_item": "tomato",
+        "commodity_id": "tomato-tomato",
         "state": "Lagos"
       },
       "forecast_horizon": "1_Month",
@@ -121,23 +122,9 @@ Fires a background event update whenever a commodity card is clicked or a detail
 ---
 
 ## 5. Supported Commodity IDs
-The AI prediction engine accepts a case-insensitive `commodity_id` parameter. Here is the reference table of all supported IDs, their mapped entities, and units:
+The AI prediction engine accepts a case-insensitive `commodity_id` parameter. Here is the reference table of all 31 supported IDs, their mapped entities, and units:
 
-### Frontend-Specific Aliases
-These are pre-mapped for ease of use by the frontend dashboards:
-
-| `commodity_id` | Food Item | Item Type | Category |
-| :--- | :--- | :--- | :--- |
-| `tomatoes` | tomato | tomato | 1000 g |
-| `rice-imported` | rice | imported | 1000 g |
-| `scotch-bonnet` | tomato | tomato | 1000 g |
-| `yam` | yam | tuber | 1000 g |
-| `white-garri` | garri | white | 1000 g |
-| `brown-beans` | beans | brown | 1000 g |
-| `onions` | potato | irish | 1000 g |
-| `eggs` | eggs | agric | 12 pcs |
-
-### Standard NBS/Audit Mappings (29 Items)
+### Standard NBS/Audit Mappings (31 Items)
 For standard querying of official National Bureau of Statistics (NBS) commodities:
 
 | `commodity_id` | Food Item | Item Type | Category |

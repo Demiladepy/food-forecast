@@ -3,10 +3,10 @@ import type { Commodity, MarketSnapshotStats } from './types'
 
 export const commodities: Commodity[] = [
   {
-    id: 'tomatoes',
+    id: 'tomato-tomato',
     name: 'Tomatoes',
     category: 'VEGETABLES',
-    image: commodityImages.tomatoes,
+    image: commodityImages['tomato-tomato'],
     vendor: 'Mile 12 Market, Lagos',
     changePct: 8.5,
     todayPrice: 40_000,
@@ -103,10 +103,10 @@ export const commodities: Commodity[] = [
     }
   },
   {
-    id: 'scotch-bonnet',
-    name: 'Scotch Bonnet',
-    category: 'VEGETABLES',
-    image: commodityImages['scotch-bonnet'],
+    id: 'potato-sweet',
+    name: 'Sweet Potato',
+    category: 'TUBERS',
+    image: commodityImages['potato-sweet'],
     vendor: 'Mile 12 Market, Lagos',
     changePct: 12.3,
     todayPrice: 32_000,
@@ -153,10 +153,10 @@ export const commodities: Commodity[] = [
     }
   },
   {
-    id: 'yam',
+    id: 'yam-tuber',
     name: 'Yam',
     category: 'TUBERS',
-    image: commodityImages.yam,
+    image: commodityImages['yam-tuber'],
     vendor: 'Mile 12 Market, Lagos',
     changePct: -10.0,
     todayPrice: 4_500,
@@ -203,10 +203,10 @@ export const commodities: Commodity[] = [
     }
   },
   {
-    id: 'white-garri',
+    id: 'garri-white',
     name: 'White Garri',
     category: 'GRAINS',
-    image: commodityImages['white-garri'],
+    image: commodityImages['garri-white'],
     vendor: 'Oyingbo Market, Lagos',
     changePct: 3.2,
     todayPrice: 18_200,
@@ -253,10 +253,10 @@ export const commodities: Commodity[] = [
     }
   },
   {
-    id: 'brown-beans',
+    id: 'beans-brown',
     name: 'Brown Beans',
     category: 'LEGUMES',
-    image: commodityImages['brown-beans'],
+    image: commodityImages['beans-brown'],
     vendor: 'Mile 12 Market, Lagos',
     changePct: -4.6,
     todayPrice: 2_400,
@@ -303,10 +303,10 @@ export const commodities: Commodity[] = [
     }
   },
   {
-    id: 'onions',
-    name: 'Onions',
-    category: 'VEGETABLES',
-    image: commodityImages.onions,
+    id: 'potato-irish',
+    name: 'Irish Potato',
+    category: 'TUBERS',
+    image: commodityImages['potato-irish'],
     vendor: 'Mile 12 Market, Lagos',
     changePct: 15.7,
     todayPrice: 95_000,
@@ -353,10 +353,10 @@ export const commodities: Commodity[] = [
     }
   },
   {
-    id: 'eggs',
-    name: 'Eggs',
+    id: 'eggs-agric-12pcs',
+    name: 'Agric Eggs (12pcs)',
     category: 'PROTEIN',
-    image: commodityImages.eggs,
+    image: commodityImages['eggs-agric-12pcs'],
     vendor: 'Agege Market, Lagos',
     changePct: 1.8,
     todayPrice: 5_800,

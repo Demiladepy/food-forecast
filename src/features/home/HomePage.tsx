@@ -1,4 +1,4 @@
-import { Activity, Sparkles, TrendingDown, TrendingUp } from 'lucide-react'
+import { Activity, Search, Sparkles, TrendingDown, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { CommodityCard, GuestChip, OptimizedImage, PageHeader, SearchBar, StatCard } from '../../components'
@@ -19,8 +19,21 @@ export function HomePage() {
   }
 
   const handleSearchSubmit = () => {
-    // Search / forecast flow coming later
+    if (!searchQuery.trim()) return
+    const match = commodities.find((c) =>
+      c.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    if (match) {
+      handleCommodityClick(match.id)
+    }
   }
+
+  const filteredCommodities = searchQuery.trim()
+    ? commodities.filter((c) =>
+        c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : commodities.slice(0, 8)
 
   return (
     <div className="page-stack">
@@ -104,24 +117,38 @@ export function HomePage() {
         <div className="mb-4 flex flex-col gap-2 sm:mb-5 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-3">
           <div className="min-w-0">
             <h2 className="text-lg font-bold tracking-tight text-foreground">
-              At-a-glance market
+              {searchQuery.trim() ? 'Search results' : 'At-a-glance market'}
             </h2>
             <p className="mt-1 text-sm text-muted">
-              Tap any commodity to see its 30-day forecast
+              {searchQuery.trim()
+                ? `Showing matches for "${searchQuery}"`
+                : 'Tap any commodity to see its 30-day forecast'}
             </p>
           </div>
-          <p className="text-sm font-medium text-muted sm:shrink-0">{commodities.length} items</p>
+          <p className="text-sm font-medium text-muted sm:shrink-0">
+            {filteredCommodities.length} {filteredCommodities.length === 1 ? 'item' : 'items'}
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-          {commodities.slice(0, 8).map((commodity) => (
-             <CommodityCard
-               key={commodity.id}
-               commodity={commodity}
-               onClick={() => handleCommodityClick(commodity.id)}
-             />
-           ))}
-        </div>
+        {filteredCommodities.length === 0 ? (
+          <div className="rounded-card border border-border bg-surface p-12 text-center">
+            <Search className="mx-auto size-8 text-muted" strokeWidth={1.5} />
+            <p className="mt-4 text-base font-bold text-foreground">No commodities found</p>
+            <p className="mt-1 text-sm text-muted">
+              We couldn't find any predictions matching &quot;{searchQuery}&quot;.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+            {filteredCommodities.map((commodity) => (
+              <CommodityCard
+                key={commodity.id}
+                commodity={commodity}
+                onClick={() => handleCommodityClick(commodity.id)}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   )

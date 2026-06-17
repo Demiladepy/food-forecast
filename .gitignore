@@ -28,3 +28,7 @@ dist-ssr
 # Data Audit Files
 data_frequency_audit.csv
 
+# Local junk/scratch folder
+local-junk/
+
+

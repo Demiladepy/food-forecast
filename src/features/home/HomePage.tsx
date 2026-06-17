@@ -1,5 +1,6 @@
 import { Activity, Sparkles, TrendingDown, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { CommodityCard, GuestChip, OptimizedImage, PageHeader, SearchBar, StatCard } from '../../components'
 import { commodities, marketStats } from '../../data/commodities'
 import { heroMarketImage, heroMarketImageFallback } from '../../data/images'
@@ -7,9 +8,10 @@ import { cn } from '../../lib/utils'
 
 export function HomePage() {
   const [searchQuery, setSearchQuery] = useState('')
+  const navigate = useNavigate()
 
-  const handleCommodityClick = () => {
-    // Detail route coming in a later screen
+  const handleCommodityClick = (id: string) => {
+    navigate(`/commodities/${id}`)
   }
 
   const handleSearchSubmit = () => {
@@ -109,12 +111,12 @@ export function HomePage() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {commodities.slice(0, 8).map((commodity) => (
-            <CommodityCard
-              key={commodity.id}
-              commodity={commodity}
-              onClick={handleCommodityClick}
-            />
-          ))}
+             <CommodityCard
+               key={commodity.id}
+               commodity={commodity}
+               onClick={() => handleCommodityClick(commodity.id)}
+             />
+           ))}
         </div>
       </section>
     </div>

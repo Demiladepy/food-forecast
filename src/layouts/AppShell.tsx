@@ -10,6 +10,9 @@ import {
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { cn } from '../lib/utils'
+import { commodities as mockCommodities } from '../data/commodities'
+import { getAllFoods } from '../api/index'
+import type { Commodity } from '../data/types'
 
 interface NavItem {
   to: string
@@ -89,6 +92,19 @@ function SidebarContent({ onNavigate, className }: SidebarContentProps) {
 export function AppShell() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const location = useLocation()
+  const [commoditiesList, setCommoditiesList] = useState<Commodity[]>(mockCommodities)
+
+  useEffect(() => {
+    getAllFoods()
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCommoditiesList(data as any)
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load commodities from backend, using fallback mock data:", err)
+      })
+  }, [])
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -174,7 +190,7 @@ export function AppShell() {
 
         <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-background">
           <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-7 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-            <Outlet />
+            <Outlet context={{ commodities: commoditiesList }} />
           </main>
         </div>
       </div>

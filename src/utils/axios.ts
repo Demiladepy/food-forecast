@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const PublicAxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL! as string,
+  baseURL: (import.meta.env.VITE_API_URL || 'http://localhost:8000/api/') as string,
   withCredentials: true
 });
 

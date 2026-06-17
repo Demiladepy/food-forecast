@@ -53,7 +53,7 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
 
       <div className="p-4">
         <h3 className="text-[15px] font-bold leading-snug text-foreground">{commodity.name}</h3>
-        <p className="mt-0.5 text-xs text-muted">{commodity.market}</p>
+        <p className="mt-0.5 text-xs text-muted">{commodity.vendor}</p>
 
         <div className="mt-4 grid grid-cols-2 gap-3">
           <div>

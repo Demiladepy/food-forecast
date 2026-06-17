@@ -1,16 +1,20 @@
 import { Activity, Sparkles, TrendingDown, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import { CommodityCard, GuestChip, OptimizedImage, PageHeader, SearchBar, StatCard } from '../../components'
-import { commodities, marketStats } from '../../data/commodities'
+import { marketStats } from '../../data/commodities'
 import { heroMarketImage, heroMarketImageFallback } from '../../data/images'
 import { cn } from '../../lib/utils'
+import { recordCommodityClick } from '../../api/index'
+import type { Commodity } from '../../data/types'
 
 export function HomePage() {
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
+  const { commodities } = useOutletContext<{ commodities: Commodity[] }>()
 
   const handleCommodityClick = (id: string) => {
+    recordCommodityClick(id).catch((err) => console.error('Failed to record click:', err))
     navigate(`/commodities/${id}`)
   }
 

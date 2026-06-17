@@ -47,7 +47,7 @@ export interface Commodity {
   name: string
   category: CommodityCategory
   image: string
-  market: string
+  vendor: string
   changePct: number
   todayPrice: number
   unit: string

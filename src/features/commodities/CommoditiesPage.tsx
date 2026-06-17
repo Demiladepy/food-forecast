@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import { CommodityCard, GuestChip, PageHeader } from '../../components'
-import { commodities } from '@/data/commodities'
-import { getAllFoods, predictFoodPrice } from '@/api/index'
+import { getAllFoods, predictFoodPrice, recordCommodityClick } from '@/api/index'
+import type { Commodity } from '@/data/types'
 
 const TOTAL_COMMODITY_COUNT = 47
 
 export function CommoditiesPage() {
   const navigate = useNavigate()
+  const { commodities } = useOutletContext<{ commodities: Commodity[] }>()
   const handleCommodityClick = (id: string) => {
+    recordCommodityClick(id).catch((err) => console.error('Failed to record click:', err))
     navigate(`/commodities/${id}`)
   }
   const [data, setData] = useState<any[]>([]);
@@ -34,7 +36,7 @@ export function CommoditiesPage() {
           name: f.name,
           category: f.category,
           image: f.image,
-          market: "",
+          vendor: "",
           changePct: p.price_change,
           todayPrice: 2000,
           unit: f.quantity,

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, ArrowDown, ArrowUp, Check, ThumbsDown, ThumbsUp, TrendingUp } from 'lucide-react'
+import { Link, useNavigate, useParams, useOutletContext } from 'react-router-dom'
+import { ArrowLeft, ArrowDown, ArrowUp, Check, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { CommodityCard } from '../../components'
-import { commodities } from '../../data/commodities'
 import { formatNGN } from '../../lib/formatters/money'
 import { getCommodityImageFallback } from '../../data/images'
 import { cn } from '../../lib/utils'
+import { recordCommodityClick } from '../../api/index'
+import type { Commodity } from '../../data/types'
 
 const FEATURE_NAME_MAP: Record<string, string> = {
   Off_Season_Tightening: 'Off-season tightening',
@@ -38,10 +39,14 @@ export function CommodityDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [feedbackGiven, setFeedbackGiven] = useState<'yes' | 'no' | null>(null)
+  const { commodities } = useOutletContext<{ commodities: Commodity[] }>()
 
   // Reset feedback state when the active commodity changes
   useEffect(() => {
     setFeedbackGiven(null)
+    if (id) {
+      recordCommodityClick(id).catch((err) => console.error('Failed to record view:', err))
+    }
   }, [id])
 
   const commodity = commodities.find((c) => c.id === id)
@@ -116,7 +121,7 @@ export function CommodityDetailPage() {
             <p className="mt-1 text-2xl font-bold text-foreground">
               {formatNGN(commodity.todayPrice)}
             </p>
-            <p className="mt-0.5 text-xs text-muted">{commodity.unit} — {commodity.market}</p>
+            <p className="mt-0.5 text-xs text-muted">{commodity.unit} — {commodity.vendor}</p>
           </div>
 
           <div className="flex items-center justify-center shrink-0">
@@ -245,7 +250,8 @@ export function CommodityDetailPage() {
       )}
       */}
 
-      {/* Track Record Box */}
+      {/* Track Record Box (Hidden for V1) */}
+      {/*
       {hasForecast && commodity.forecast?.track_record && (
         <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
           <div className="flex items-center gap-2.5">
@@ -277,6 +283,7 @@ export function CommodityDetailPage() {
           </p>
         </section>
       )}
+      */}
 
       {/* Feedback Widget */}
       <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 text-center">

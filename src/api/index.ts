@@ -24,3 +24,7 @@ export async function predictFoodPrice(body: PredictFoodSchema): Promise<Predict
   const { data } = await PublicAxiosInstance.post<ApiResponse<PredictFoodPriceResponse>>(`predict`, body);
   return data.data;
 }
+
+export async function recordCommodityClick(id: string): Promise<void> {
+  await PublicAxiosInstance.post(`foods/${id}/click`);
+}

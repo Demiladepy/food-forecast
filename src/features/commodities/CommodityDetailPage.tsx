@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams, useOutletContext } from 'react-router-dom'
 import { ArrowLeft, ArrowDown, ArrowUp, Check, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { CommodityCard } from '../../components'
@@ -66,10 +66,13 @@ export function CommodityDetailPage() {
     )
   }
 
-  // Calculate recommendation items (3 other random commodities)
-  const recommendations = commodities
-    .filter((c) => c.id !== commodity.id)
-    .slice(0, 3)
+  // Calculate recommendation items (3 random commodities excluding the current one)
+  const recommendations = useMemo(() => {
+    return commodities
+      .filter((c) => c.id !== commodity.id)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+  }, [commodity.id, commodities])
 
   // Calculate values
   const hasForecast = !!commodity.forecast

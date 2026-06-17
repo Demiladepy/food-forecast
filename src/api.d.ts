@@ -4,6 +4,7 @@ interface ApiResponse<T> {
 }
 
 interface FoodResponse {
+  id: string;
   name: string;
   type: string;
   common_name: string;
@@ -13,22 +14,26 @@ interface FoodResponse {
 }
 
 interface PredictFoodPriceResponse {
-  price_change: number;
-  summary: {
-    text: string;
-    confidence: 'high' | 'moderate' | 'low';
+  status: string;
+  request_echo: {
+    food_item: string;
+    state: string;
   };
-  factors: {
-    name: string;
-    change: number;
-    reason: string;
-  }[];
-  season_remark: string;
+  forecast_horizon: string;
+  predicted_price_change_percent: number;
+  xai_explanation: {
+    base_market_trend: number;
+    top_driving_features: {
+      feature: string;
+      current_value: number;
+      impact_percentage: number;
+      direction: 'increase' | 'decrease';
+    }[];
+  };
 }
 
 interface PredictFoodSchema {
-  name: string,
-  type: string,
-  state: string,
-  month_num: number,
-};
+  commodity_id: string;
+  state: string;
+  month_num: number;
+}

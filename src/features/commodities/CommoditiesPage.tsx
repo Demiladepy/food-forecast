@@ -26,22 +26,20 @@ export function CommoditiesPage() {
     getAllFoods().then(foods => {
       const com = foods.map<Promise<any>>(async f => {
         const p = await predictFoodPrice({
-          name: f.name,
-          type: f.type,
+          commodity_id: f.id,
           month_num: 1,
           state: 'Lagos'
         })
         return {
-          id: f.name,
+          id: f.id,
           name: f.name,
           category: f.category,
           image: f.image,
           vendor: "",
-          changePct: p.price_change,
+          changePct: p.predicted_price_change_percent,
           todayPrice: 2000,
           unit: f.quantity,
-          forecastPrice: 2000 * p.price_change / 100,
-          confidence: p.summary.confidence
+          forecastPrice: 2000 * p.predicted_price_change_percent / 100,
         }
       });
       Promise.allSettled(com).then(c => {

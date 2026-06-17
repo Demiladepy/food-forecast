@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CommodityCard, GuestChip, PageHeader } from '../../components'
-import { commodities } from '../../data/commodities'
+import { commodities } from '@/data/commodities'
+import { getAllFoods, predictFoodPrice } from '@/api/index'
 
 const TOTAL_COMMODITY_COUNT = 47
 
@@ -9,6 +11,37 @@ export function CommoditiesPage() {
   const handleCommodityClick = (id: string) => {
     navigate(`/commodities/${id}`)
   }
+  const [data, setData] = useState<any[]>([]);
+  const [loadData, ] = useState(false)
+
+  useEffect(() => {
+    if (!loadData) return;
+    getAllFoods().then(foods => {
+      const com = foods.map<Promise<any>>(async f => {
+        const p = await predictFoodPrice({
+          name: f.name,
+          type: f.type,
+          month_num: 1,
+          state: 'Lagos'
+        })
+        return {
+          id: f.name,
+          name: f.name,
+          category: f.category,
+          image: f.image,
+          market: "",
+          changePct: p.price_change,
+          todayPrice: 2000,
+          unit: f.quantity,
+          forecastPrice: 2000 * p.price_change / 100,
+          confidence: p.summary.confidence
+        }
+      });
+      Promise.allSettled(com).then(c => {
+        setData(c.filter(cc => cc.status == 'fulfilled').map(cc => cc.value))
+      })
+    })
+  }, [loadData])
 
   return (
     <div className="page-stack">

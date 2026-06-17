@@ -1,11 +1,13 @@
+import { useNavigate } from 'react-router-dom'
 import { CommodityCard, GuestChip, PageHeader } from '../../components'
 import { commodities } from '../../data/commodities'
 
 const TOTAL_COMMODITY_COUNT = 47
 
 export function CommoditiesPage() {
-  const handleCommodityClick = () => {
-    // Detail route coming in a later screen
+  const navigate = useNavigate()
+  const handleCommodityClick = (id: string) => {
+    navigate(`/commodities/${id}`)
   }
 
   return (
@@ -30,7 +32,7 @@ export function CommoditiesPage() {
             <CommodityCard
               key={commodity.id}
               commodity={commodity}
-              onClick={handleCommodityClick}
+              onClick={() => handleCommodityClick(commodity.id)}
             />
           ))}
         </div>

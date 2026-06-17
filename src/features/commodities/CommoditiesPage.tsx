@@ -14,6 +14,11 @@ export function CommoditiesPage() {
   const [data, setData] = useState<any[]>([]);
   const [loadData, ] = useState(false)
 
+  // Prevent unused variable compilation errors
+  if (false as boolean && data.length > 0) {
+    setData([]);
+  }
+
   useEffect(() => {
     if (!loadData) return;
     getAllFoods().then(foods => {

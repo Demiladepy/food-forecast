@@ -15,8 +15,8 @@ export const commodities: Commodity[] = [
     confidence: 'high',
     forecast: {
       predicted_price_change_percent: 8.5,
-      forecast_horizon: '4_Weeks',
-      summary: 'Tomatoes are likely to climb about 8.5% over the next four weeks as off-season tightening limits supply from the north.',
+      forecast_horizon: '1_Month',
+      summary: 'Tomatoes are likely to climb about 8.5% over the next month as off-season tightening limits supply from the north.',
       xai_explanation: {
         base_market_trend: 10.21,
         top_driving_features: [
@@ -65,7 +65,7 @@ export const commodities: Commodity[] = [
     confidence: 'high',
     forecast: {
       predicted_price_change_percent: -3.1,
-      forecast_horizon: '4_Weeks',
+      forecast_horizon: '1_Month',
       summary: 'Imported Rice prices are expected to drop slightly by 3.1% as foreign exchange rate pressures stabilize and local substitutes increase.',
       xai_explanation: {
         base_market_trend: -4.5,
@@ -115,7 +115,7 @@ export const commodities: Commodity[] = [
     confidence: 'medium',
     forecast: {
       predicted_price_change_percent: 12.3,
-      forecast_horizon: '4_Weeks',
+      forecast_horizon: '1_Month',
       summary: 'Scotch bonnet prices are forecasted to increase by 12.3% due to high transport costs and local distribution challenges at the depots.',
       xai_explanation: {
         base_market_trend: 8.5,
@@ -165,7 +165,7 @@ export const commodities: Commodity[] = [
     confidence: 'high',
     forecast: {
       predicted_price_change_percent: -10.0,
-      forecast_horizon: '4_Weeks',
+      forecast_horizon: '1_Month',
       summary: 'Yam prices are expected to drop by 10.0% as the harvest season begins, bringing fresh stock to urban markets.',
       xai_explanation: {
         base_market_trend: -15.5,
@@ -215,7 +215,7 @@ export const commodities: Commodity[] = [
     confidence: 'high',
     forecast: {
       predicted_price_change_percent: 3.2,
-      forecast_horizon: '4_Weeks',
+      forecast_horizon: '1_Month',
       summary: 'White Garri prices will rise slightly by 3.2% as processing costs for cassava tubers remain high due to fuel and labor expenses.',
       xai_explanation: {
         base_market_trend: 1.5,
@@ -265,7 +265,7 @@ export const commodities: Commodity[] = [
     confidence: 'high',
     forecast: {
       predicted_price_change_percent: -4.6,
-      forecast_horizon: '4_Weeks',
+      forecast_horizon: '1_Month',
       summary: 'Brown Beans are expected to experience a 4.6% decrease as warehouse releases and grain stocks from northern silos satisfy current demand.',
       xai_explanation: {
         base_market_trend: -6.2,
@@ -315,7 +315,7 @@ export const commodities: Commodity[] = [
     confidence: 'low',
     forecast: {
       predicted_price_change_percent: 15.7,
-      forecast_horizon: '4_Weeks',
+      forecast_horizon: '1_Month',
       summary: 'Onion prices are expected to jump significantly by 15.7% due to seasonal off-season scarcity and decay losses in traditional storage structures.',
       xai_explanation: {
         base_market_trend: 12.5,
@@ -365,7 +365,7 @@ export const commodities: Commodity[] = [
     confidence: 'high',
     forecast: {
       predicted_price_change_percent: 1.8,
-      forecast_horizon: '4_Weeks',
+      forecast_horizon: '1_Month',
       summary: 'Egg prices will remain relatively stable, climbing just 1.8% as high poultry feed costs are offset by steady production rates.',
       xai_explanation: {
         base_market_trend: 0.5,

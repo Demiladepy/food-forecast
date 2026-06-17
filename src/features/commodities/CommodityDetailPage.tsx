@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, ArrowDown, ArrowUp, Calendar, Check, ThumbsDown, ThumbsUp, TrendingUp } from 'lucide-react'
-import { ConfidenceTag, CommodityCard } from '../../components'
+import { ArrowLeft, ArrowDown, ArrowUp, Check, ThumbsDown, ThumbsUp, TrendingUp } from 'lucide-react'
+import { CommodityCard } from '../../components'
 import { commodities } from '../../data/commodities'
 import { formatNGN } from '../../lib/formatters/money'
 import { getCommodityImageFallback } from '../../data/images'
@@ -103,13 +103,9 @@ export function CommodityDetailPage() {
                 {commodity.name}
               </h1>
               <p className="text-[11px] font-semibold text-muted tracking-wider uppercase mt-0.5">
-                Forecast Horizon: 1 Month (4 Weeks)
+                Forecast Horizon: 1 Month
               </p>
             </div>
-          </div>
-          
-          <div className="flex self-start sm:self-center">
-            <ConfidenceTag confidence={commodity.confidence} />
           </div>
         </div>
 
@@ -132,7 +128,7 @@ export function CommodityDetailPage() {
 
           <div className="flex-1 rounded-card border border-border bg-surface-soft p-5">
             <div className="flex items-center justify-between gap-2">
-              <p className="text-[10px] font-bold tracking-wider text-muted uppercase">In 4 weeks</p>
+              <p className="text-[10px] font-bold tracking-wider text-muted uppercase">In 1 month</p>
               <span
                 className={cn(
                   'inline-flex items-center gap-1 rounded-pill px-2.5 py-0.5 text-[11px] font-bold',
@@ -160,7 +156,7 @@ export function CommodityDetailPage() {
         {/* Narrative summary text */}
         <div className="mt-8">
           <p className="text-base leading-relaxed text-foreground md:text-lg">
-            {commodity.forecast?.summary || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next four weeks.`}
+            {commodity.forecast?.summary || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next month.`}
           </p>
         </div>
       </div>
@@ -232,7 +228,8 @@ export function CommodityDetailPage() {
         </section>
       )}
 
-      {/* Seasonality Box */}
+      {/* Seasonality Box (Hidden/Disabled for V1) */}
+      {/*
       {hasForecast && commodity.forecast?.seasonality && (
         <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8 flex items-start gap-4">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-muted">
@@ -246,6 +243,7 @@ export function CommodityDetailPage() {
           </div>
         </section>
       )}
+      */}
 
       {/* Track Record Box */}
       {hasForecast && commodity.forecast?.track_record && (

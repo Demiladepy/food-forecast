@@ -6,7 +6,6 @@ import { formatNGN } from '../lib/formatters/money'
 import { cn } from '../lib/utils'
 import { CategoryBadge } from './CategoryBadge'
 import { ChangeBadge } from './ChangeBadge'
-import { ConfidenceTag } from './ConfidenceTag'
 import { OptimizedImage } from './OptimizedImage'
 
 export interface CommodityCardProps {
@@ -68,7 +67,7 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
           </div>
           <div className="text-right">
             <p className="text-[10px] font-semibold tracking-[0.08em] text-muted uppercase">
-              In 4 weeks
+              In 1 month
             </p>
             <p className="mt-1 text-lg font-bold leading-tight text-foreground">
               {formatNGN(commodity.forecastPrice)}
@@ -78,8 +77,7 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
 
         <div className="my-3.5 h-px bg-border" />
 
-        <div className="flex items-center justify-between">
-          <ConfidenceTag confidence={commodity.confidence} />
+        <div className="flex items-center justify-end">
           <button
             type="button"
             onClick={handleShareClick}

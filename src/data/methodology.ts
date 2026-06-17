@@ -32,7 +32,7 @@ export interface TrackRecordStat {
 }
 
 export const methodologyIntro =
-  'Food prices in Nigeria move for reasons that feel invisible until they hit your pocket. Food Forecast turns daily wholesale data from real markets into a four-week outlook you can plan around, with plain-language explanations for every move.'
+  'Food prices in Nigeria move for reasons that feel invisible until they hit your pocket. Food Forecast turns daily wholesale data from real markets into a 1-month outlook you can plan around, with plain-language explanations for every move.'
 
 export const whyWeBuiltParagraphs = [
   'When fuel, FX, and harvest cycles all pull in different directions, guessing what tomatoes or rice will cost next month is not a budgeting strategy. It is a gamble.',
@@ -51,7 +51,7 @@ export const forecastSteps: MethodologyStep[] = [
   {
     id: 'model',
     title: 'We model',
-    body: 'A gradient-boosted model trained on six years of price history estimates where each commodity is likely to land over the next four weeks, with confidence levels tied to data quality.',
+    body: 'A gradient-boosted model trained on six years of price history estimates where each commodity is likely to land over the next month.',
   },
   {
     id: 'explain',
@@ -72,11 +72,6 @@ export const trustPoints: TrustPoint[] = [
       'Price moves are tied to real-world drivers you can verify, not a black box that only shows a percentage.',
   },
   {
-    lead: "We say when we don't know.",
-    detail:
-      'Low-confidence tags appear on cards when data is thin or volatility is unusually high. We would rather warn you than pretend.',
-  },
-  {
     lead: 'No paywall, no ads, no trading.',
     detail:
       'Food Forecast is a non-commercial project built at NitHub, University of Lagos. It is free to use, with no commercial strings attached.',
@@ -90,7 +85,7 @@ export const audienceCards: AudienceCard[] = [
   },
   {
     title: 'Small food businesses',
-    body: 'Restaurant owners and caterers who need to price menus four weeks out without guessing.',
+    body: 'Restaurant owners and caterers who need to price menus one month out without guessing.',
   },
   {
     title: 'Journalists & researchers',

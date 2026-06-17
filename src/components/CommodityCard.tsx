@@ -1,4 +1,5 @@
-import { Share2 } from 'lucide-react'
+import { Share2, Check } from 'lucide-react'
+import { useState } from 'react'
 import type { KeyboardEvent, MouseEvent } from 'react'
 import { getCommodityImageFallback } from '../data/images'
 import type { Commodity } from '../data/types'
@@ -15,8 +16,34 @@ export interface CommodityCardProps {
 }
 
 export function CommodityCard({ commodity, onClick, className }: CommodityCardProps) {
-  const handleShareClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const [copied, setCopied] = useState(false)
+
+  const handleShareClick = async (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
+    const shareUrl = `${window.location.origin}/commodities/${commodity.id}`
+    const shareData = {
+      title: `${commodity.name} Forecast | Food Forecast`,
+      text: `Check out the price forecast and analysis for ${commodity.name} on Food Forecast!`,
+      url: shareUrl,
+    }
+
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData)
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Error sharing:', err)
+        }
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      } catch (err) {
+        console.error('Failed to copy link:', err)
+      }
+    }
   }
 
   return (
@@ -83,8 +110,17 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
             onClick={handleShareClick}
             className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1 px-2 text-[11px] font-medium text-muted transition-colors hover:text-foreground active:text-foreground sm:min-h-0 sm:min-w-0 sm:px-0"
           >
-            <Share2 className="size-3.5" strokeWidth={1.75} aria-hidden />
-            Share
+            {copied ? (
+              <>
+                <Check className="size-3.5 text-brand-green" strokeWidth={2.5} aria-hidden />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Share2 className="size-3.5" strokeWidth={1.75} aria-hidden />
+                Share
+              </>
+            )}
           </button>
         </div>
       </div>

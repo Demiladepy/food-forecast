@@ -16,8 +16,9 @@
   /* Semantic */
   --color-danger: #dc2626;
   --color-amber: #d9920a;
-  --color-increase: var(--color-brand-green);
-  --color-decrease: var(--color-danger);
+  /* Price change (consumer view: lower prices = good/green, higher = bad/red) */
+  --color-increase: var(--color-danger);
+  --color-decrease: var(--color-brand-green);
 
   /* Surfaces */
   --color-background: #f8f6f2;

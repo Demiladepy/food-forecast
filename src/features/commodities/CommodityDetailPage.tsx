@@ -141,8 +141,8 @@ export function CommodityDetailPage() {
                 className={cn(
                   'inline-flex items-center gap-1 rounded-pill px-2.5 py-0.5 text-[11px] font-bold',
                   direction === 'increase'
-                    ? 'bg-confidence-high/10 text-brand-green'
-                    : 'bg-confidence-low/10 text-danger',
+                    ? 'bg-increase/10 text-increase'
+                    : 'bg-decrease/10 text-decrease',
                 )}
               >
                 {direction === 'increase' ? (
@@ -192,8 +192,8 @@ export function CommodityDetailPage() {
                       className={cn(
                         'flex size-8 shrink-0 items-center justify-center rounded-brand border text-xs',
                         isUp
-                          ? 'border-brand-green/20 bg-confidence-high/10 text-brand-green'
-                          : 'border-danger/20 bg-confidence-low/10 text-danger',
+                          ? 'border-increase/20 bg-increase/10 text-increase'
+                          : 'border-decrease/20 bg-decrease/10 text-decrease',
                       )}
                     >
                       {isUp ? (
@@ -216,7 +216,7 @@ export function CommodityDetailPage() {
                     <span
                       className={cn(
                         'text-sm font-bold',
-                        isUp ? 'text-brand-green' : 'text-danger',
+                        isUp ? 'text-increase' : 'text-decrease',
                       )}
                     >
                       Impact: {impactText}

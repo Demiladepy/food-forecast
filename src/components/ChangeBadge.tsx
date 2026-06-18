@@ -15,7 +15,7 @@ export function ChangeBadge({ changePct, className }: ChangeBadgeProps) {
     <span
       className={cn(
         'inline-flex items-center gap-1 rounded-pill px-2.5 py-1 text-[11px] font-bold text-white',
-        isRising ? 'bg-brand-green' : 'bg-danger',
+        isRising ? 'bg-increase' : 'bg-decrease',
         className,
       )}
     >

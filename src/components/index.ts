@@ -1,7 +1,7 @@
 export { Button, type ButtonProps } from './Button'
 export { CategoryBadge, type CategoryBadgeProps } from './CategoryBadge'
 export { ChangeBadge, type ChangeBadgeProps } from './ChangeBadge'
-export { CommodityCard, type CommodityCardProps } from './CommodityCard'
+export { CommodityCard, CommodityCardSkeleton, type CommodityCardProps } from './CommodityCard'
 export { GuestChip, type GuestChipProps } from './GuestChip'
 export {
   IconSectionHeader,

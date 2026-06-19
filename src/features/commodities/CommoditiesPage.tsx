@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { Search } from 'lucide-react'
-import { CommodityCard, GuestChip, PageHeader, SearchBar } from '../../components'
+import { CommodityCard, CommodityCardSkeleton, GuestChip, PageHeader, SearchBar } from '../../components'
 import { getAllFoods, predictFoodPrice, recordCommodityClick } from '@/api/index'
 import type { Commodity } from '@/data/types'
 import { cn } from '../../lib/utils'
@@ -17,7 +17,7 @@ const CATEGORIES = [
 
 export function CommoditiesPage() {
   const navigate = useNavigate()
-  const { commodities } = useOutletContext<{ commodities: Commodity[] }>()
+  const { commodities, isLoading } = useOutletContext<{ commodities: Commodity[], isLoading: boolean }>()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('ALL')
   const [data, setData] = useState<any[]>([])
@@ -115,11 +115,17 @@ export function CommoditiesPage() {
             <p className="mt-1 text-sm text-muted">Browse forecasts across monitored markets</p>
           </div>
           <p className="text-sm font-medium text-muted sm:shrink-0">
-            {filteredCommodities.length} {filteredCommodities.length === 1 ? 'item' : 'items'}
+            {isLoading ? 'Loading items...' : `${filteredCommodities.length} ${filteredCommodities.length === 1 ? 'item' : 'items'}`}
           </p>
         </div>
 
-        {filteredCommodities.length === 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+            {[...Array(6)].map((_, i) => (
+              <CommodityCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : filteredCommodities.length === 0 ? (
           <div className="rounded-card border border-border bg-surface p-12 text-center">
             <Search className="mx-auto size-8 text-muted" strokeWidth={1.5} />
             <p className="mt-4 text-base font-bold text-foreground">No commodities found</p>

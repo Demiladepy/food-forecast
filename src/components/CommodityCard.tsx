@@ -127,3 +127,43 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
     </article>
   )
 }
+
+export function CommodityCardSkeleton() {
+  return (
+    <div className="overflow-hidden rounded-card border border-border bg-surface shadow-sm animate-pulse">
+      {/* Image skeleton */}
+      <div className="h-40 bg-surface-soft relative">
+        <div className="absolute left-3 top-3 h-5 w-16 rounded bg-border" />
+        <div className="absolute right-3 top-3 h-5 w-12 rounded bg-border" />
+      </div>
+
+      {/* Info skeleton */}
+      <div className="p-4 space-y-3">
+        <div className="space-y-1.5">
+          <div className="h-4 w-2/3 rounded bg-border" />
+          <div className="h-3 w-1/3 rounded bg-border" />
+        </div>
+
+        <div className="my-1.5 h-px bg-border" />
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-1.5">
+            <div className="h-3 w-10 rounded bg-border" />
+            <div className="h-5 w-20 rounded bg-border" />
+            <div className="h-3 w-12 rounded bg-border" />
+          </div>
+          <div className="space-y-1.5 flex flex-col items-end">
+            <div className="h-3 w-16 rounded bg-border" />
+            <div className="h-5 w-20 rounded bg-border" />
+          </div>
+        </div>
+
+        <div className="my-1 h-px bg-border" />
+
+        <div className="flex justify-end pt-1">
+          <div className="h-4 w-12 rounded bg-border" />
+        </div>
+      </div>
+    </div>
+  )
+}

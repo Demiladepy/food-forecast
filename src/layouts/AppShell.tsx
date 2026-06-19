@@ -96,7 +96,8 @@ function SidebarContent({ onNavigate, className }: SidebarContentProps) {
 export function AppShell() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const location = useLocation()
-  const [commoditiesList, setCommoditiesList] = useState<Commodity[]>(mockCommodities)
+  const [commoditiesList, setCommoditiesList] = useState<Commodity[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const toTitleCase = (str: string) => {
@@ -140,6 +141,14 @@ export function AppShell() {
       })
       .catch((err) => {
         console.error("Failed to load commodities from backend, using fallback mock data:", err)
+        // Optionally fall back to mockCommodities if server is dead
+        setCommoditiesList(mockCommodities.map(item => ({
+          ...item,
+          name: toTitleCase(item.name)
+        })) as any)
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }, [])
 
@@ -227,7 +236,7 @@ export function AppShell() {
 
         <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-background">
           <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-7 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-            <Outlet context={{ commodities: commoditiesList }} />
+            <Outlet context={{ commodities: commoditiesList, isLoading }} />
           </main>
         </div>
       </div>

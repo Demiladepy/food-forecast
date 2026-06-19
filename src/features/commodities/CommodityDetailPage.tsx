@@ -39,7 +39,7 @@ export function CommodityDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [feedbackGiven, setFeedbackGiven] = useState<'yes' | 'no' | null>(null)
-  const { commodities } = useOutletContext<{ commodities: Commodity[] }>()
+  const { commodities, isLoading: isListLoading } = useOutletContext<{ commodities: Commodity[], isLoading: boolean }>()
 
   const [liveForecast, setLiveForecast] = useState<PredictFoodPriceResponse | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -81,52 +81,7 @@ export function CommodityDetailPage() {
       .slice(0, 3)
   }, [commodity?.id, commodities])
 
-  if (!commodity) {
-    return (
-      <div className="py-12 text-center">
-        <h2 className="text-xl font-bold text-foreground">Commodity not found</h2>
-        <p className="mt-2 text-muted">The requested commodity details could not be found.</p>
-        <Link
-          to="/commodities"
-          className="mt-6 inline-flex items-center gap-2 rounded-pill bg-brand-green px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-green-hover"
-        >
-          <ArrowLeft className="size-4" /> Back to Commodities
-        </Link>
-      </div>
-    )
-  }
-
-  // Calculate values
-  const isBackendMock = liveForecast && 
-    (liveForecast as any).request_echo?.food_item === 'yam' && 
-    commodity.id !== 'yam-tuber';
-
-  const hasForecast = isLoading ? false : (((!!liveForecast && !isBackendMock) || !!commodity.forecast))
-  
-  const forecastPercent = (liveForecast && !isBackendMock)
-    ? liveForecast.predicted_price_change_percent 
-    : (commodity.forecast ? commodity.forecast.predicted_price_change_percent : commodity.changePct)
-    
-  const forecastPrice = (liveForecast && !isBackendMock)
-    ? commodity.todayPrice * (1 + liveForecast.predicted_price_change_percent / 100)
-    : commodity.forecastPrice
-    
-  const direction = forecastPercent >= 0 ? 'increase' : 'decrease'
-
-  const explanationText = (!isBackendMock && liveForecast?.summary?.text)
-    || (!isBackendMock && liveForecast?.season_remark)
-    || commodity.forecast?.summary 
-    || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next month.`
-
-  const driversList = (liveForecast && !isBackendMock)
-    ? liveForecast.xai_explanation?.top_driving_features 
-    : (commodity.forecast?.xai_explanation?.top_driving_features || [])
-
-  const baseMarketTrend = (liveForecast && !isBackendMock)
-    ? liveForecast.xai_explanation?.base_market_trend
-    : (commodity.forecast?.xai_explanation?.base_market_trend || 0)
-
-  if (isLoading) {
+  if (isListLoading || isLoading) {
     return (
       <div className="page-stack animate-pulse">
         {/* Back button placeholder */}
@@ -192,6 +147,53 @@ export function CommodityDetailPage() {
       </div>
     )
   }
+
+  if (!commodity) {
+    return (
+      <div className="py-12 text-center">
+        <h2 className="text-xl font-bold text-foreground">Commodity not found</h2>
+        <p className="mt-2 text-muted">The requested commodity details could not be found.</p>
+        <Link
+          to="/commodities"
+          className="mt-6 inline-flex items-center gap-2 rounded-pill bg-brand-green px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-green-hover"
+        >
+          <ArrowLeft className="size-4" /> Back to Commodities
+        </Link>
+      </div>
+    )
+  }
+
+  // Calculate values
+  const isBackendMock = liveForecast && 
+    (liveForecast as any).request_echo?.food_item === 'yam' && 
+    commodity.id !== 'yam-tuber';
+
+  const hasForecast = (!!liveForecast && !isBackendMock) || !!commodity.forecast
+  
+  const forecastPercent = (liveForecast && !isBackendMock)
+    ? liveForecast.predicted_price_change_percent 
+    : (commodity.forecast ? commodity.forecast.predicted_price_change_percent : commodity.changePct)
+    
+  const forecastPrice = (liveForecast && !isBackendMock)
+    ? commodity.todayPrice * (1 + liveForecast.predicted_price_change_percent / 100)
+    : commodity.forecastPrice
+    
+  const direction = forecastPercent >= 0 ? 'increase' : 'decrease'
+
+  const explanationText = (!isBackendMock && liveForecast?.summary?.text)
+    || (!isBackendMock && liveForecast?.season_remark)
+    || commodity.forecast?.summary 
+    || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next month.`
+
+  const driversList = (liveForecast && !isBackendMock)
+    ? liveForecast.xai_explanation?.top_driving_features 
+    : (commodity.forecast?.xai_explanation?.top_driving_features || [])
+
+  const baseMarketTrend = (liveForecast && !isBackendMock)
+    ? liveForecast.xai_explanation?.base_market_trend
+    : (commodity.forecast?.xai_explanation?.base_market_trend || 0)
+
+
 
   return (
     <div className="page-stack">

@@ -1,7 +1,7 @@
 import { Activity, Search, Sparkles, TrendingDown, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
-import { CommodityCard, GuestChip, OptimizedImage, PageHeader, SearchBar, StatCard } from '../../components'
+import { CommodityCard, CommodityCardSkeleton, GuestChip, OptimizedImage, PageHeader, SearchBar, StatCard } from '../../components'
 import { marketStats } from '../../data/commodities'
 import { heroMarketImage, heroMarketImageFallback } from '../../data/images'
 import { cn } from '../../lib/utils'
@@ -11,7 +11,7 @@ import type { Commodity } from '../../data/types'
 export function HomePage() {
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
-  const { commodities } = useOutletContext<{ commodities: Commodity[] }>()
+  const { commodities, isLoading } = useOutletContext<{ commodities: Commodity[], isLoading: boolean }>()
 
   const handleCommodityClick = (id: string) => {
     recordCommodityClick(id).catch((err) => console.error('Failed to record click:', err))
@@ -126,11 +126,19 @@ export function HomePage() {
             </p>
           </div>
           <p className="text-sm font-medium text-muted sm:shrink-0">
-            {searchQuery.trim() ? '' : 'Top '}{filteredCommodities.length} {filteredCommodities.length === 1 ? 'item' : 'items'}
+            {isLoading
+              ? 'Loading items...'
+              : `${searchQuery.trim() ? '' : 'Top '}${filteredCommodities.length} ${filteredCommodities.length === 1 ? 'item' : 'items'}`}
           </p>
         </div>
 
-        {filteredCommodities.length === 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+            {[...Array(6)].map((_, i) => (
+              <CommodityCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : filteredCommodities.length === 0 ? (
           <div className="rounded-card border border-border bg-surface p-12 text-center">
             <Search className="mx-auto size-8 text-muted" strokeWidth={1.5} />
             <p className="mt-4 text-base font-bold text-foreground">No commodities found</p>

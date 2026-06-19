@@ -42,16 +42,17 @@ export function CommoditiesPage() {
           month_num: 1,
           state: 'Lagos',
         })
+        const pct = p.price_change ?? p.predicted_price_change_percent ?? 0
         return {
           id: f.id,
           name: f.name,
           category: f.category,
           image: f.image,
           vendor: '',
-          changePct: p.predicted_price_change_percent,
+          changePct: pct,
           todayPrice: 2000,
           unit: f.quantity,
-          forecastPrice: (2000 * p.predicted_price_change_percent) / 100,
+          forecastPrice: (2000 * pct) / 100,
         }
       })
       Promise.allSettled(com).then((c) => {

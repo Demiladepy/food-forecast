@@ -18,11 +18,13 @@ interface PredictFoodPriceResponse {
   commodity_id: string;
   request_echo: {
     commodity_id: string;
+    food_item?: string;
     state: string;
   };
   forecast_horizon: string;
-  predicted_price_change_percent: number;
-  xai_explanation: {
+  predicted_price_change_percent?: number;
+  price_change?: number;
+  xai_explanation?: {
     base_market_trend: number;
     top_driving_features: {
       feature: string;
@@ -31,6 +33,11 @@ interface PredictFoodPriceResponse {
       direction: 'increase' | 'decrease';
     }[];
   };
+  factors?: {
+    name: string;
+    change: number;
+    reason: string;
+  }[];
   summary?: {
     text: string;
   };

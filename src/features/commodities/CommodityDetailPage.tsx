@@ -171,11 +171,11 @@ export function CommodityDetailPage() {
   const hasForecast = (!!liveForecast && !isBackendMock) || !!commodity.forecast
   
   const forecastPercent = (liveForecast && !isBackendMock)
-    ? liveForecast.predicted_price_change_percent 
+    ? (liveForecast.price_change ?? liveForecast.predicted_price_change_percent ?? 0)
     : (commodity.forecast ? commodity.forecast.predicted_price_change_percent : commodity.changePct)
     
   const forecastPrice = (liveForecast && !isBackendMock)
-    ? commodity.todayPrice * (1 + liveForecast.predicted_price_change_percent / 100)
+    ? commodity.todayPrice * (1 + (liveForecast.price_change ?? liveForecast.predicted_price_change_percent ?? 0) / 100)
     : commodity.forecastPrice
     
   const direction = forecastPercent >= 0 ? 'increase' : 'decrease'
@@ -185,12 +185,40 @@ export function CommodityDetailPage() {
     || commodity.forecast?.summary 
     || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next month.`
 
-  const driversList = (liveForecast && !isBackendMock)
-    ? liveForecast.xai_explanation?.top_driving_features 
-    : (commodity.forecast?.xai_explanation?.top_driving_features || [])
+  interface NormalizedDriver {
+    name: string
+    impact: number
+    isUp: boolean
+    subtitle: string
+  }
+
+  const useLive = liveForecast && !isBackendMock;
+
+  const driversList: NormalizedDriver[] = (useLive && liveForecast.factors)
+    ? liveForecast.factors.map((f: any) => ({
+        name: f.name,
+        impact: f.change,
+        isUp: f.change >= 0,
+        subtitle: f.reason,
+      }))
+    : (useLive && liveForecast.xai_explanation?.top_driving_features)
+    ? liveForecast.xai_explanation.top_driving_features.map((f: any) => ({
+        name: formatFeatureName(f.feature),
+        impact: f.impact_percentage,
+        isUp: f.direction === 'increase',
+        subtitle: `Current Value: ${f.current_value}`,
+      }))
+    : (commodity && commodity.forecast?.xai_explanation?.top_driving_features)
+    ? commodity.forecast.xai_explanation.top_driving_features.map((f: any) => ({
+        name: formatFeatureName(f.feature),
+        impact: f.impact_percentage,
+        isUp: f.direction === 'increase',
+        subtitle: `Current Value: ${f.current_value}`,
+      }))
+    : []
 
   const baseMarketTrend = (liveForecast && !isBackendMock)
-    ? liveForecast.xai_explanation?.base_market_trend
+    ? (liveForecast.xai_explanation?.base_market_trend ?? 0)
     : (commodity.forecast?.xai_explanation?.base_market_trend || 0)
 
 
@@ -293,25 +321,24 @@ export function CommodityDetailPage() {
           </p>
 
           <div className="mt-6 flex flex-col gap-3">
-            {driversList.map((featureObj) => {
-              const isUp = featureObj.direction === 'increase'
-              const impactText = `${isUp ? '+' : ''}${featureObj.impact_percentage.toFixed(2)}%`
+            {driversList.map((driver) => {
+              const impactText = `${driver.isUp ? '+' : ''}${driver.impact.toFixed(2)}%`
               
               return (
                 <div
-                  key={featureObj.feature}
+                  key={driver.name}
                   className="flex flex-col gap-3 rounded-card border border-border bg-surface-soft p-4 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex items-start gap-3">
                     <span
                       className={cn(
                         'flex size-8 shrink-0 items-center justify-center rounded-brand border text-xs',
-                        isUp
+                        driver.isUp
                           ? 'border-increase/20 bg-increase/10 text-increase'
                           : 'border-decrease/20 bg-decrease/10 text-decrease',
                       )}
                     >
-                      {isUp ? (
+                      {driver.isUp ? (
                         <ArrowUp className="size-3.5" strokeWidth={2.5} />
                       ) : (
                         <ArrowDown className="size-3.5" strokeWidth={2.5} />
@@ -319,10 +346,10 @@ export function CommodityDetailPage() {
                     </span>
                     <div>
                       <p className="text-sm font-bold text-foreground">
-                        {formatFeatureName(featureObj.feature)}
+                        {driver.name}
                       </p>
                       <p className="mt-0.5 text-xs text-muted">
-                        Current Value: {featureObj.current_value}
+                        {driver.subtitle}
                       </p>
                     </div>
                   </div>
@@ -331,7 +358,7 @@ export function CommodityDetailPage() {
                     <span
                       className={cn(
                         'text-sm font-bold',
-                        isUp ? 'text-increase' : 'text-decrease',
+                        driver.isUp ? 'text-increase' : 'text-decrease',
                       )}
                     >
                       Impact: {impactText}
@@ -342,12 +369,14 @@ export function CommodityDetailPage() {
             })}
           </div>
 
-          <div className="mt-5 border-t border-border pt-4 text-xs text-muted">
-            Base market trend contributes about{' '}
-            <span className="font-semibold text-foreground">
-              {baseMarketTrend.toFixed(2)}%
-            </span>.
-          </div>
+          {baseMarketTrend !== 0 && (
+            <div className="mt-5 border-t border-border pt-4 text-xs text-muted">
+              Base market trend contributes about{' '}
+              <span className="font-semibold text-foreground">
+                {baseMarketTrend.toFixed(2)}%
+              </span>.
+            </div>
+          )}
         </section>
       )}
 

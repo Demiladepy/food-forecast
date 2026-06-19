@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { cn } from '../lib/utils'
 import { commodities as mockCommodities } from '../data/commodities'
+import { getCommodityImage } from '../data/images'
 import { getAllFoods } from '../api/index'
 import type { Commodity } from '../data/types'
 import { getCommodityCategory } from '../utils/categories'
@@ -124,17 +125,18 @@ export function AppShell() {
             const mockItem = mockCommodities.find((c) => c.id === item.id) as any || {}
             const anyItem = item as any
             const rawName = item.name || mockItem.name || '';
-            return {
-              ...mockItem,
-              ...item,
-              name: toTitleCase(rawName),
-              todayPrice: anyItem.todayPrice || mockItem.todayPrice || 0,
-              changePct: anyItem.changePct || mockItem.changePct || 0,
-              forecastPrice: anyItem.forecastPrice || mockItem.forecastPrice || 0,
-              vendor: anyItem.vendor || mockItem.vendor || '',
-              category: getCommodityCategory(item.id),
-              unit: item.category || item.quantity || (mockItem as any).unit || 'unit',
-            }
+              return {
+                ...mockItem,
+                ...item,
+                name: toTitleCase(rawName),
+                image: getCommodityImage(item.id),
+                todayPrice: anyItem.todayPrice || mockItem.todayPrice || 0,
+                changePct: anyItem.changePct || mockItem.changePct || 0,
+                forecastPrice: anyItem.forecastPrice || mockItem.forecastPrice || 0,
+                vendor: anyItem.vendor || mockItem.vendor || '',
+                category: getCommodityCategory(item.id),
+                unit: item.category || item.quantity || (mockItem as any).unit || 'unit',
+              }
           })
           setCommoditiesList(mapped as any)
         }

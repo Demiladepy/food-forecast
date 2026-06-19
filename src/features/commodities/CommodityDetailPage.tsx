@@ -172,11 +172,11 @@ export function CommodityDetailPage() {
   
   const forecastPercent = (liveForecast && !isBackendMock)
     ? (liveForecast.price_change ?? liveForecast.predicted_price_change_percent ?? 0)
-    : (commodity.forecast ? commodity.forecast.predicted_price_change_percent : commodity.changePct)
+    : (commodity.forecast ? (commodity.forecast.predicted_price_change_percent ?? 0) : (commodity.changePct ?? 0))
     
   const forecastPrice = (liveForecast && !isBackendMock)
     ? commodity.todayPrice * (1 + (liveForecast.price_change ?? liveForecast.predicted_price_change_percent ?? 0) / 100)
-    : commodity.forecastPrice
+    : (commodity.forecastPrice ?? commodity.todayPrice ?? 0)
     
   const direction = forecastPercent >= 0 ? 'increase' : 'decrease'
 

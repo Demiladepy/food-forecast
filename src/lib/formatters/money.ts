@@ -5,8 +5,10 @@ const ngnFormatter = new Intl.NumberFormat('en-NG', {
   maximumFractionDigits: 0,
 })
 
-/** Formats naira like ₦40,000 (no decimals). */
 export function formatNGN(amount: number): string {
+  if (amount === undefined || amount === null || typeof amount !== 'number' || isNaN(amount)) {
+    return '₦0'
+  }
   return ngnFormatter.format(amount)
 }
 

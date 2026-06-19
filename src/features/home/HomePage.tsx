@@ -1,8 +1,7 @@
 import { Activity, Search, Sparkles, TrendingDown, TrendingUp } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { CommodityCard, CommodityCardSkeleton, GuestChip, OptimizedImage, PageHeader, SearchBar, StatCard } from '../../components'
-import { marketStats } from '../../data/commodities'
 import { heroMarketImage, heroMarketImageFallback } from '../../data/images'
 import { cn } from '../../lib/utils'
 import { recordCommodityClick } from '../../api/index'
@@ -12,6 +11,21 @@ export function HomePage() {
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
   const { commodities, isLoading } = useOutletContext<{ commodities: Commodity[], isLoading: boolean }>()
+
+  const liveStats = useMemo(() => {
+    if (isLoading || !commodities || commodities.length === 0) {
+      return null
+    }
+    const risingCount = commodities.filter((c) => c.changePct >= 0).length
+    const fallingCount = commodities.filter((c) => c.changePct < 0).length
+    const totalChange = commodities.reduce((acc, c) => acc + c.changePct, 0)
+    const avgChangePct = commodities.length > 0 ? (totalChange / commodities.length) : 0
+    return {
+      risingCount,
+      fallingCount,
+      avgChangePct: parseFloat(avgChangePct.toFixed(1)),
+    }
+  }, [commodities, isLoading])
 
   const handleCommodityClick = (id: string) => {
     recordCommodityClick(id).catch((err) => console.error('Failed to record click:', err))
@@ -88,7 +102,13 @@ export function HomePage() {
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         <StatCard
           label="Rising"
-          value={marketStats.risingCount}
+          value={
+            isLoading ? (
+              <div className="h-[2.15rem] w-12 bg-border animate-pulse rounded mt-1 mb-0.5" />
+            ) : (
+              liveStats?.risingCount ?? 0
+            )
+          }
           sublabel="commodities"
           icon={TrendingUp}
           iconVariant="plain"
@@ -96,7 +116,13 @@ export function HomePage() {
         />
         <StatCard
           label="Falling"
-          value={marketStats.fallingCount}
+          value={
+            isLoading ? (
+              <div className="h-[2.15rem] w-12 bg-border animate-pulse rounded mt-1 mb-0.5" />
+            ) : (
+              liveStats?.fallingCount ?? 0
+            )
+          }
           sublabel="commodities"
           icon={TrendingDown}
           iconVariant="plain"
@@ -104,7 +130,13 @@ export function HomePage() {
         />
         <StatCard
           label="Avg. Change"
-          value={`${marketStats.avgChangePct}%`}
+          value={
+            isLoading ? (
+              <div className="h-[2.15rem] w-20 bg-border animate-pulse rounded mt-1 mb-0.5" />
+            ) : (
+              `${liveStats?.avgChangePct ?? 0}%`
+            )
+          }
           sublabel="this week"
           icon={Activity}
           iconVariant="boxed"

@@ -139,6 +139,8 @@ export function AppShell() {
               }
           })
           setCommoditiesList(mapped as any)
+        } else {
+          throw new Error("Empty or invalid food list from backend")
         }
       })
       .catch((err) => {

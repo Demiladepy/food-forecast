@@ -54,11 +54,11 @@ export function CommodityCard({ commodity, onClick, className }: CommodityCardPr
       onKeyDown={
         onClick
           ? (e: KeyboardEvent<HTMLElement>) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                onClick()
-              }
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              onClick()
             }
+          }
           : undefined
       }
       className={cn(

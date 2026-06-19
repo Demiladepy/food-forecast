@@ -8,6 +8,7 @@ export interface SearchBarProps {
   onSubmit?: () => void
   placeholder?: string
   className?: string
+  hideButton?: boolean
 }
 
 export function SearchBar({
@@ -16,6 +17,7 @@ export function SearchBar({
   onSubmit,
   placeholder = 'Search a food (e.g. Yam, Tomatoes, Rice)...',
   className,
+  hideButton = false,
 }: SearchBarProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -50,17 +52,19 @@ export function SearchBar({
           aria-label="Search food commodities"
         />
       </div>
-      <button
-        type="submit"
-        className={cn(
-          'min-h-11 w-full shrink-0 rounded-pill bg-brand-green px-7 py-2.5 text-sm font-semibold text-white',
-          'transition-colors hover:bg-brand-green-hover active:bg-brand-green-hover',
-          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green',
-          'sm:w-auto sm:min-h-0',
-        )}
-      >
-        Forecast
-      </button>
+      {!hideButton && (
+        <button
+          type="submit"
+          className={cn(
+            'min-h-11 w-full shrink-0 rounded-pill bg-brand-green px-7 py-2.5 text-sm font-semibold text-white',
+            'transition-colors hover:bg-brand-green-hover active:bg-brand-green-hover',
+            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green',
+            'sm:w-auto sm:min-h-0',
+          )}
+        >
+          Forecast
+        </button>
+      )}
     </form>
   )
 }

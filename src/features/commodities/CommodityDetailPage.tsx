@@ -5,7 +5,7 @@ import { CommodityCard } from '../../components'
 import { formatNGN } from '../../lib/formatters/money'
 import { getCommodityImageFallback } from '../../data/images'
 import { cn } from '../../lib/utils'
-import { recordCommodityClick } from '../../api/index'
+import { logHelpfulnessFeedback, recordCommodityClick, predictFoodPrice } from '../../api/index'
 import type { Commodity } from '../../data/types'
 
 const FEATURE_NAME_MAP: Record<string, string> = {
@@ -41,15 +41,45 @@ export function CommodityDetailPage() {
   const [feedbackGiven, setFeedbackGiven] = useState<'yes' | 'no' | null>(null)
   const { commodities } = useOutletContext<{ commodities: Commodity[] }>()
 
+  const [liveForecast, setLiveForecast] = useState<PredictFoodPriceResponse | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
   // Reset feedback state when the active commodity changes
   useEffect(() => {
     setFeedbackGiven(null)
     if (id) {
       recordCommodityClick(id).catch((err) => console.error('Failed to record view:', err))
+      
+      setIsLoading(true)
+      predictFoodPrice({
+        commodity_id: id,
+        state: 'Lagos',
+        month_num: new Date().getMonth() + 1
+      })
+        .then((data) => {
+          setLiveForecast(data)
+        })
+        .catch((err) => {
+          console.error('Failed to fetch live prediction:', err)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    } else {
+      setLiveForecast(null)
     }
   }, [id])
 
   const commodity = commodities.find((c) => c.id === id)
+
+  // Calculate recommendation items (3 random commodities excluding the current one)
+  const recommendations = useMemo(() => {
+    if (!commodity) return []
+    return commodities
+      .filter((c) => c.id !== commodity.id)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+  }, [commodity?.id, commodities])
 
   if (!commodity) {
     return (
@@ -66,19 +96,102 @@ export function CommodityDetailPage() {
     )
   }
 
-  // Calculate recommendation items (3 random commodities excluding the current one)
-  const recommendations = useMemo(() => {
-    return commodities
-      .filter((c) => c.id !== commodity.id)
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 3)
-  }, [commodity.id, commodities])
-
   // Calculate values
-  const hasForecast = !!commodity.forecast
-  const forecastPercent = commodity.forecast ? commodity.forecast.predicted_price_change_percent : commodity.changePct
-  const forecastPrice = commodity.forecastPrice
+  const isBackendMock = liveForecast && 
+    (liveForecast as any).request_echo?.food_item === 'yam' && 
+    commodity.id !== 'yam-tuber';
+
+  const hasForecast = isLoading ? false : (((!!liveForecast && !isBackendMock) || !!commodity.forecast))
+  
+  const forecastPercent = (liveForecast && !isBackendMock)
+    ? liveForecast.predicted_price_change_percent 
+    : (commodity.forecast ? commodity.forecast.predicted_price_change_percent : commodity.changePct)
+    
+  const forecastPrice = (liveForecast && !isBackendMock)
+    ? commodity.todayPrice * (1 + liveForecast.predicted_price_change_percent / 100)
+    : commodity.forecastPrice
+    
   const direction = forecastPercent >= 0 ? 'increase' : 'decrease'
+
+  const explanationText = (!isBackendMock && liveForecast?.summary?.text)
+    || (!isBackendMock && liveForecast?.season_remark)
+    || commodity.forecast?.summary 
+    || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next month.`
+
+  const driversList = (liveForecast && !isBackendMock)
+    ? liveForecast.xai_explanation?.top_driving_features 
+    : (commodity.forecast?.xai_explanation?.top_driving_features || [])
+
+  const baseMarketTrend = (liveForecast && !isBackendMock)
+    ? liveForecast.xai_explanation?.base_market_trend
+    : (commodity.forecast?.xai_explanation?.base_market_trend || 0)
+
+  if (isLoading) {
+    return (
+      <div className="page-stack animate-pulse">
+        {/* Back button placeholder */}
+        <div>
+          <span className="inline-block h-4 w-28 rounded bg-border" />
+        </div>
+
+        {/* Main card panel skeleton */}
+        <div className="rounded-card border border-border bg-surface p-5 sm:p-6 md:p-8">
+          <div className="flex items-center gap-4">
+            <div className="size-14 shrink-0 rounded-brand bg-surface-soft border border-border" />
+            <div className="space-y-2">
+              <div className="h-7 w-48 rounded bg-border" />
+              <div className="h-3.5 w-32 rounded bg-border" />
+            </div>
+          </div>
+
+          {/* Price transition block skeleton */}
+          <div className="mt-8 flex flex-col items-stretch gap-4 md:flex-row md:items-center">
+            <div className="flex-1 rounded-card border border-border bg-surface-soft p-5 space-y-2">
+              <div className="h-3 w-12 rounded bg-border" />
+              <div className="h-8 w-32 rounded bg-border" />
+              <div className="h-4 w-24 rounded bg-border" />
+            </div>
+            <div className="flex items-center justify-center shrink-0">
+              <div className="size-9 rounded-full bg-border" />
+            </div>
+            <div className="flex-1 rounded-card border border-border bg-surface-soft p-5 space-y-2">
+              <div className="h-3 w-16 rounded bg-border" />
+              <div className="h-8 w-32 rounded bg-border" />
+              <div className="h-4 w-12 rounded bg-border" />
+            </div>
+          </div>
+
+          {/* Narrative text skeleton */}
+          <div className="mt-8 space-y-2.5">
+            <div className="h-4 w-full rounded bg-border" />
+            <div className="h-4 w-11/12 rounded bg-border" />
+            <div className="h-4 w-4/5 rounded bg-border" />
+          </div>
+        </div>
+
+        {/* Why this prediction skeleton */}
+        <div className="rounded-card border border-border bg-surface p-5 sm:p-6 md:p-8 space-y-4">
+          <div className="h-5 w-44 rounded bg-border" />
+          <div className="h-4 w-64 rounded bg-border" />
+          
+          <div className="mt-6 flex flex-col gap-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex flex-col gap-3 rounded-card border border-border bg-surface-soft p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="size-8 rounded-brand bg-border shrink-0" />
+                  <div className="space-y-1.5">
+                    <div className="h-4 w-32 rounded bg-border" />
+                    <div className="h-3 w-24 rounded bg-border" />
+                  </div>
+                </div>
+                <div className="h-4 w-20 rounded bg-border" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="page-stack">
@@ -164,13 +277,13 @@ export function CommodityDetailPage() {
         {/* Narrative summary text */}
         <div className="mt-8">
           <p className="text-base leading-relaxed text-foreground md:text-lg">
-            {commodity.forecast?.summary || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next month.`}
+            {explanationText}
           </p>
         </div>
       </div>
 
       {/* Why this prediction section */}
-      {hasForecast && commodity.forecast && (
+      {hasForecast && driversList.length > 0 && (
         <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
           <h2 className="text-lg font-bold tracking-tight text-foreground">Why this prediction</h2>
           <p className="mt-1 text-sm text-muted">
@@ -178,7 +291,7 @@ export function CommodityDetailPage() {
           </p>
 
           <div className="mt-6 flex flex-col gap-3">
-            {commodity.forecast.xai_explanation.top_driving_features.map((featureObj) => {
+            {driversList.map((featureObj) => {
               const isUp = featureObj.direction === 'increase'
               const impactText = `${isUp ? '+' : ''}${featureObj.impact_percentage.toFixed(2)}%`
               
@@ -230,7 +343,7 @@ export function CommodityDetailPage() {
           <div className="mt-5 border-t border-border pt-4 text-xs text-muted">
             Base market trend contributes about{' '}
             <span className="font-semibold text-foreground">
-              {commodity.forecast.xai_explanation.base_market_trend.toFixed(2)}%
+              {baseMarketTrend.toFixed(2)}%
             </span>.
           </div>
         </section>
@@ -301,14 +414,24 @@ export function CommodityDetailPage() {
             <div className="mt-4 flex justify-center gap-3">
               <button
                 type="button"
-                onClick={() => setFeedbackGiven('yes')}
+                onClick={() => {
+                  setFeedbackGiven('yes')
+                  if (id) {
+                    logHelpfulnessFeedback(id, true).catch(err => console.error("Failed to log feedback:", err))
+                  }
+                }}
                 className="inline-flex min-h-10 items-center gap-2 rounded-pill border border-border bg-surface px-5 py-2 text-xs font-semibold text-foreground hover:bg-surface-soft active:bg-surface-soft"
               >
                 <ThumbsUp className="size-3.5 text-brand-green" /> Yes
               </button>
               <button
                 type="button"
-                onClick={() => setFeedbackGiven('no')}
+                onClick={() => {
+                  setFeedbackGiven('no')
+                  if (id) {
+                    logHelpfulnessFeedback(id, false).catch(err => console.error("Failed to log feedback:", err))
+                  }
+                }}
                 className="inline-flex min-h-10 items-center gap-2 rounded-pill border border-border bg-surface px-5 py-2 text-xs font-semibold text-foreground hover:bg-surface-soft active:bg-surface-soft"
               >
                 <ThumbsDown className="size-3.5 text-danger" /> No

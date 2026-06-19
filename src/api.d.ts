@@ -31,10 +31,35 @@ interface PredictFoodPriceResponse {
       direction: 'increase' | 'decrease';
     }[];
   };
+  summary?: {
+    text: string;
+  };
+  season_remark?: string;
 }
 
 interface PredictFoodSchema {
   commodity_id: string;
   state: string;
   month_num: number;
+}
+
+interface FeedbackRequest {
+  useful: boolean;
+}
+
+interface AdminStatsResponse {
+  total_views: number;
+  helpful_count: number;
+  unhelpful_count: number;
+  model_version: string;
+  last_sync_time: string;
+  commodity_stats: AdminCommodityStat[];
+}
+
+interface AdminCommodityStat {
+  commodity_id: string;
+  name: string;
+  views: number;
+  helpful: number;
+  unhelpful: number;
 }

@@ -114,14 +114,73 @@ Fires a background event update whenever a commodity card is clicked or a detail
 
 ---
 
-## 4. Omissions in V1
+## 4. Record Prediction Helpfulness Feedback
+Fires whenever a user clicks "Yes" or "No" in the feedback widget of a commodity details page.
+
+* **Method/URL:** `POST /api/foods/:id/feedback`
+* **URL Parameter:** `id` (e.g. `tomato-tomato`)
+* **Request Body Schema:**
+  ```json
+  {
+    "useful": true // true if "Yes" was clicked, false if "No" was clicked
+  }
+  ```
+* **Response Status:** `200 OK`
+* **Response Schema:**
+  ```json
+  {
+    "success": true,
+    "message": "Feedback recorded successfully"
+  }
+  ```
+
+---
+
+## 5. Get Admin Dashboard Statistics (View-Only)
+Fetches aggregated stats for the admin page, including total clicks (views), overall helpfulness counts, and detailed counts per commodity.
+
+* **Method/URL:** `GET /api/admin/stats`
+* **Response Status:** `200 OK`
+* **Response Schema (`ApiResponse<AdminStatsResponse>`):**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "total_views": 1420,
+      "helpful_count": 320,
+      "unhelpful_count": 45,
+      "model_version": "v1.0.4-catboost",
+      "last_sync_time": "2026-06-17T12:00:00Z",
+      "commodity_stats": [
+        {
+          "commodity_id": "tomato-tomato",
+          "name": "Tomatoes",
+          "views": 450,
+          "helpful": 120,
+          "unhelpful": 15
+        },
+        {
+          "commodity_id": "rice-imported",
+          "name": "Rice (Imported)",
+          "views": 380,
+          "helpful": 95,
+          "unhelpful": 20
+        }
+      ]
+    }
+  }
+  ```
+
+---
+
+## 6. Omissions in V1
 * **Confidence Badges:** The V1 UI has completely hidden all confidence rating badges (High/Medium/Low) for visual metrics.
 * **Seasonality Cards:** The seasonality details box (`Is this normal for the season?`) is disabled/commented out in the V1 UI.
 * **Track Record Cards:** The track record comparison layout (`How we did last time`) is hidden for V1 as this data model is not yet finalized on the backend.
 
 ---
 
-## 5. Supported Commodity IDs
+## 7. Supported Commodity IDs
 The AI prediction engine accepts a case-insensitive `commodity_id` parameter. Here is the reference table of all 31 supported IDs, their mapped entities, and units:
 
 ### Standard NBS/Audit Mappings (31 Items)

@@ -6,6 +6,7 @@ import {
   RefreshCw,
   Sprout,
   X,
+  ShieldCheck,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
@@ -13,6 +14,8 @@ import { cn } from '../lib/utils'
 import { commodities as mockCommodities } from '../data/commodities'
 import { getAllFoods } from '../api/index'
 import type { Commodity } from '../data/types'
+import { getCommodityCategory } from '../utils/categories'
+
 
 interface NavItem {
   to: string
@@ -25,6 +28,7 @@ const navItems: NavItem[] = [
   { to: '/', label: 'Home', icon: Home, end: true },
   { to: '/commodities', label: 'Commodities', icon: BarChart3 },
   { to: '/how-it-works', label: 'How the forecast works', icon: HelpCircle },
+  { to: '/admin', label: 'Admin Console', icon: ShieldCheck },
 ]
 
 interface SidebarContentProps {
@@ -95,10 +99,43 @@ export function AppShell() {
   const [commoditiesList, setCommoditiesList] = useState<Commodity[]>(mockCommodities)
 
   useEffect(() => {
+    const toTitleCase = (str: string) => {
+      return str
+        .toLowerCase()
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+        .replace(/\(imported\)/gi, '(Imported)')
+        .replace(/\(boneless\)/gi, '(Boneless)')
+        .replace(/\(bone-in\)/gi, '(Bone-in)')
+        .replace(/\(dozen\)/gi, '(Dozen)')
+        .replace(/\(smoked\)/gi, '(Smoked)')
+        .replace(/\(agric\)/gi, '(Agric)')
+        .replace(/\(local\)/gi, '(Local)')
+        .replace(/\(ofada\)/gi, '(Ofada)')
+        .replace(/\(medium grained\)/gi, '(Medium Grained)');
+    };
+
     getAllFoods()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          setCommoditiesList(data as any)
+          const mapped = data.map((item) => {
+            const mockItem = mockCommodities.find((c) => c.id === item.id) as any || {}
+            const anyItem = item as any
+            const rawName = item.name || mockItem.name || '';
+            return {
+              ...mockItem,
+              ...item,
+              name: toTitleCase(rawName),
+              todayPrice: anyItem.todayPrice || mockItem.todayPrice || 0,
+              changePct: anyItem.changePct || mockItem.changePct || 0,
+              forecastPrice: anyItem.forecastPrice || mockItem.forecastPrice || 0,
+              vendor: anyItem.vendor || mockItem.vendor || '',
+              category: getCommodityCategory(item.id),
+              unit: item.category || item.quantity || (mockItem as any).unit || 'unit',
+            }
+          })
+          setCommoditiesList(mapped as any)
         }
       })
       .catch((err) => {

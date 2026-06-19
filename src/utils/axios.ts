@@ -10,7 +10,7 @@ const PrivateAxiosInstance = axios.create({
   ...PublicAxiosInstance.defaults,
   headers: {
     ...PublicAxiosInstance.defaults.headers.common,
-    'Authorization': 'Bearer TOKEN_NERE'
+    'Authorization': 'Bearer A_VERY_GOOD_PASSWORD_ONLY_NIHUB_KNOWS'
   },
 });
 PrivateAxiosInstance.interceptors.request.use(function (config) {

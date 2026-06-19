@@ -1,4 +1,4 @@
-import { PublicAxiosInstance } from "@/utils/axios";
+import { PublicAxiosInstance, PrivateAxiosInstance } from "@/utils/axios";
 
 export async function getAllFoods(): Promise<FoodResponse[]> {
   const { data } = await PublicAxiosInstance.get<ApiResponse<FoodResponse[]>>('foods');
@@ -27,4 +27,13 @@ export async function predictFoodPrice(body: PredictFoodSchema): Promise<Predict
 
 export async function recordCommodityClick(id: string): Promise<void> {
   await PublicAxiosInstance.post(`foods/${id}/click`);
+}
+
+export async function logHelpfulnessFeedback(id: string, useful: boolean): Promise<void> {
+  await PublicAxiosInstance.post(`foods/${id}/feedback`, { useful });
+}
+
+export async function getAdminStats(): Promise<AdminStatsResponse> {
+  const { data } = await PrivateAxiosInstance.get<ApiResponse<AdminStatsResponse>>('admin/stats');
+  return data.data;
 }

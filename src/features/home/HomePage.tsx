@@ -126,7 +126,7 @@ export function HomePage() {
             </p>
           </div>
           <p className="text-sm font-medium text-muted sm:shrink-0">
-            {filteredCommodities.length} {filteredCommodities.length === 1 ? 'item' : 'items'}
+            {searchQuery.trim() ? '' : 'Top '}{filteredCommodities.length} {filteredCommodities.length === 1 ? 'item' : 'items'}
           </p>
         </div>
 

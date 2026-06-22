@@ -37,3 +37,7 @@ export async function getAdminStats(): Promise<AdminStatsResponse> {
   const { data } = await PrivateAxiosInstance.get<ApiResponse<AdminStatsResponse>>('admin/stats');
   return data.data;
 }
+
+export async function submitSuggestion(message: string, sentiment?: string): Promise<void> {
+  await PublicAxiosInstance.post('foods/suggestions', { message, sentiment });
+}

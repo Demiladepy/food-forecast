@@ -7,13 +7,17 @@ import {
   Sprout,
   X,
   ShieldCheck,
+  MessageSquare,
+  Send,
+  CheckCircle2,
+  AlertCircle,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { cn } from '../lib/utils'
 import { commodities as mockCommodities } from '../data/commodities'
 import { getCommodityImage } from '../data/images'
-import { getAllFoods } from '../api/index'
+import { getAllFoods, submitSuggestion } from '../api/index'
 import type { Commodity } from '../data/types'
 import { getCommodityCategory } from '../utils/categories'
 
@@ -34,10 +38,11 @@ const navItems: NavItem[] = [
 
 interface SidebarContentProps {
   onNavigate?: () => void
+  onOpenFeedback: () => void
   className?: string
 }
 
-function SidebarContent({ onNavigate, className }: SidebarContentProps) {
+function SidebarContent({ onNavigate, onOpenFeedback, className }: SidebarContentProps) {
   return (
     <div className={cn('flex h-full flex-col', className)}>
       <div className="flex items-center gap-3 px-5 pb-2 pt-7 lg:pt-7">
@@ -74,6 +79,18 @@ function SidebarContent({ onNavigate, className }: SidebarContentProps) {
             <span className="leading-snug">{label}</span>
           </NavLink>
         ))}
+        
+        <button
+          type="button"
+          onClick={() => {
+            if (onNavigate) onNavigate()
+            onOpenFeedback()
+          }}
+          className="flex min-h-11 w-full items-center gap-2.5 rounded-pill px-3.5 py-2.5 text-[13px] font-semibold text-foreground transition-colors hover:bg-surface active:bg-surface cursor-pointer text-left"
+        >
+          <MessageSquare className="size-4 shrink-0" strokeWidth={2} aria-hidden />
+          <span className="leading-snug">Contact & Support</span>
+        </button>
       </nav>
 
       <div className="mt-auto p-4 pt-6">
@@ -96,9 +113,37 @@ function SidebarContent({ onNavigate, className }: SidebarContentProps) {
 
 export function AppShell() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [feedbackOpen, setFeedbackOpen] = useState(false)
+  const [feedbackMessage, setFeedbackMessage] = useState('')
+  const [feedbackSentiment, setFeedbackSentiment] = useState<'too_high' | 'too_low' | 'just_right' | ''>('')
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false)
+  const [feedbackSuccess, setFeedbackSuccess] = useState(false)
+  const [feedbackError, setFeedbackError] = useState('')
   const location = useLocation()
   const [commoditiesList, setCommoditiesList] = useState<Commodity[]>([])
   const [isLoading, setIsLoading] = useState(true)
+
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!feedbackMessage.trim()) return
+    setIsSubmittingFeedback(true)
+    setFeedbackError('')
+    try {
+      await submitSuggestion(feedbackMessage, feedbackSentiment || undefined)
+      setFeedbackSuccess(true)
+      setFeedbackMessage('')
+      setFeedbackSentiment('')
+      setTimeout(() => {
+        setFeedbackOpen(false)
+        setFeedbackSuccess(false)
+      }, 2000)
+    } catch (err) {
+      console.error(err)
+      setFeedbackError('Failed to submit feedback. Please try again.')
+    } finally {
+      setIsSubmittingFeedback(false)
+    }
+  }
 
   useEffect(() => {
     const toTitleCase = (str: string) => {
@@ -162,11 +207,11 @@ export function AppShell() {
   }, [location.pathname])
 
   useEffect(() => {
-    document.body.style.overflow = mobileNavOpen ? 'hidden' : ''
+    document.body.style.overflow = (mobileNavOpen || feedbackOpen) ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [mobileNavOpen])
+  }, [mobileNavOpen, feedbackOpen])
 
   return (
     <div className="flex min-h-screen min-h-[100dvh] bg-background">
@@ -175,7 +220,7 @@ export function AppShell() {
         className="fixed inset-y-0 left-0 z-30 hidden w-sidebar flex-col border-r border-border bg-background lg:flex"
         aria-label="Main navigation"
       >
-        <SidebarContent />
+        <SidebarContent onOpenFeedback={() => setFeedbackOpen(true)} />
       </aside>
 
       {/* Mobile drawer */}
@@ -213,7 +258,14 @@ export function AppShell() {
               <X className="size-5" aria-hidden />
             </button>
           </div>
-          <SidebarContent onNavigate={() => setMobileNavOpen(false)} className="-mt-2" />
+          <SidebarContent
+            onNavigate={() => setMobileNavOpen(false)}
+            onOpenFeedback={() => {
+              setMobileNavOpen(false)
+              setFeedbackOpen(true)
+            }}
+            className="-mt-2"
+          />
         </aside>
       </div>
 
@@ -244,6 +296,134 @@ export function AppShell() {
           </main>
         </div>
       </div>
+
+      {/* Feedback Modal */}
+      {feedbackOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-brand-dark/40 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => {
+              if (!isSubmittingFeedback) setFeedbackOpen(false)
+            }}
+          />
+          
+          {/* Modal Content */}
+          <div className="relative w-full max-w-md transform overflow-hidden rounded-hero border border-border bg-background p-6 shadow-elevated transition-all">
+            <button
+              type="button"
+              onClick={() => setFeedbackOpen(false)}
+              disabled={isSubmittingFeedback}
+              className="absolute right-4 top-4 text-muted hover:text-foreground disabled:opacity-50 cursor-pointer"
+              aria-label="Close modal"
+            >
+              <X className="size-5" />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-brand bg-brand-green/10 text-brand-green">
+                <MessageSquare className="size-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-foreground">Feedback & Support</h3>
+                <p className="text-xs text-muted">We would love to hear your suggestions or comments!</p>
+              </div>
+            </div>
+
+            {feedbackSuccess ? (
+              <div className="mt-6 flex flex-col items-center justify-center py-6 text-center">
+                <CheckCircle2 className="size-12 text-brand-green animate-bounce" />
+                <p className="mt-3 text-sm font-bold text-foreground">Thank You!</p>
+                <p className="mt-1 text-xs text-muted">Your feedback has been submitted successfully.</p>
+              </div>
+            ) : (
+              <div className="mt-5 space-y-5">
+                {/* Contact Info Card */}
+                <div className="rounded-card border border-border bg-surface p-3.5 text-xs text-muted space-y-1.5 shadow-sm">
+                  <p className="font-bold text-foreground">NITHUB UNILAG</p>
+                  <p className="flex items-center gap-1.5">
+                    <span>📧</span>
+                    <a href="mailto:info-nitdahub@unilag.edu.ng" className="text-brand-green hover:underline">
+                      info-nitdahub@unilag.edu.ng
+                    </a>
+                  </p>
+                  <p className="flex items-center gap-1.5">
+                    <span>📍</span>
+                    <span>Akoka, Yaba, Lagos</span>
+                  </p>
+                </div>
+
+                <form onSubmit={handleFeedbackSubmit} className="space-y-4">
+                  {feedbackError && (
+                    <div className="flex items-center gap-2 rounded-pill bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-500">
+                      <AlertCircle className="size-4 shrink-0" />
+                      <span>{feedbackError}</span>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-xs font-bold text-foreground mb-2">
+                      How do you feel about food prices? (Optional)
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { value: 'too_low', label: 'Too Low', emoji: '📉' },
+                        { value: 'just_right', label: 'Just Right', emoji: '👌' },
+                        { value: 'too_high', label: 'Too High', emoji: '📈' },
+                      ].map((opt) => (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          onClick={() => setFeedbackSentiment(opt.value as any)}
+                          className={cn(
+                            'flex flex-col items-center gap-1 rounded-card border p-2 text-xs font-medium transition-all hover:bg-surface cursor-pointer',
+                            feedbackSentiment === opt.value
+                              ? 'border-brand-green bg-brand-green/5 text-brand-green shadow-sm'
+                              : 'border-border bg-background text-foreground'
+                          )}
+                        >
+                          <span className="text-base">{opt.emoji}</span>
+                          <span>{opt.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="feedback-message" className="block text-xs font-bold text-foreground mb-1.5">
+                      Your Message
+                    </label>
+                    <textarea
+                      id="feedback-message"
+                      required
+                      rows={4}
+                      value={feedbackMessage}
+                      onChange={(e) => setFeedbackMessage(e.target.value)}
+                      placeholder="Enter suggestions, report data issues, or leave a general comment..."
+                      className="w-full rounded-card border border-border bg-surface px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted focus:border-brand-green focus:outline-none focus:ring-1 focus:ring-brand-green focus:bg-background"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmittingFeedback || !feedbackMessage.trim()}
+                    className="flex w-full items-center justify-center gap-2 rounded-pill bg-brand-green px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-brand-green/90 active:bg-brand-green/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    {isSubmittingFeedback ? (
+                      'Submitting...'
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send className="size-3.5" />
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

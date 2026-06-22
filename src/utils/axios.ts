@@ -8,20 +8,17 @@ const PublicAxiosInstance = axios.create({
 
 const PrivateAxiosInstance = axios.create({
   ...PublicAxiosInstance.defaults,
-  headers: {
-    ...PublicAxiosInstance.defaults.headers.common,
-    'Authorization': 'Bearer A_VERY_GOOD_PASSWORD_ONLY_NIHUB_KNOWS'
-  },
 });
 PrivateAxiosInstance.interceptors.request.use(function (config) {
-  // Do something before request is sent
-  // token = localStorage.getItem('authToken');
-  // config.headers.Authorization = `Bearer ${token}`
+  const token = localStorage.getItem('adminApiKey');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 }, function (error) {
   // Do something with request error
   return Promise.reject(error);
-})
+});
 
 // Add a response interceptor
 PrivateAxiosInstance.interceptors.response.use(function (response) {

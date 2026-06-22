@@ -9,12 +9,25 @@ export interface PageHeaderProps {
   className?: string
 }
 
+function getGreetingByTime(): string {
+  const hour = new Date().getHours()
+  if (hour >= 5 && hour < 12) {
+    return 'Good morning'
+  } else if (hour >= 12 && hour < 17) {
+    return 'Good afternoon'
+  } else {
+    return 'Good evening'
+  }
+}
+
 export function PageHeader({
-  greeting = 'Good morning',
+  greeting,
   title,
   action,
   className,
 }: PageHeaderProps) {
+  const displayGreeting = greeting || getGreetingByTime()
+
   return (
     <header
       className={cn(
@@ -23,7 +36,7 @@ export function PageHeader({
       )}
     >
       <div className="min-w-0 flex-1">
-        <p className="text-sm text-muted">{greeting}</p>
+        <p className="text-sm text-muted">{displayGreeting}</p>
         <h1 className="font-display mt-0.5 text-xl leading-tight text-foreground sm:text-[1.65rem]">
           {title}
         </h1>

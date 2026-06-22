@@ -60,7 +60,7 @@ export function AdminPage() {
     } catch (err) {
       localStorage.removeItem('adminApiKey')
       localStorage.removeItem('isAdmin')
-      setAuthError('Authentication failed. Invalid Admin API Key.')
+      setAuthError('Authentication failed. Invalid Admin Key.')
       console.error('Admin login failed:', err)
     } finally {
       setLoading(false)
@@ -112,14 +112,14 @@ export function AdminPage() {
             </span>
             <h1 className="text-xl font-bold tracking-tight text-foreground">Admin Console Login</h1>
             <p className="mt-2 text-sm text-muted">
-              Enter your Admin API Key below to access the management console.
+              Enter your Admin Key below to access the management console.
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="mt-6 space-y-4">
             <div>
               <label htmlFor="apiKey" className="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">
-                Admin API Key
+                Admin Key
               </label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-muted">
@@ -131,7 +131,7 @@ export function AdminPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter API key..."
+                  placeholder="Enter Admin Key..."
                   disabled={loading}
                   className="flex min-h-11 w-full rounded-pill border border-border bg-transparent pl-10 pr-4 text-sm outline-none placeholder:text-muted/50 focus:border-brand-green transition-colors disabled:opacity-50"
                 />

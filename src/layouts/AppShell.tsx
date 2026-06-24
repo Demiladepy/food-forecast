@@ -79,7 +79,7 @@ function SidebarContent({ onNavigate, onOpenFeedback, className }: SidebarConten
             <span className="leading-snug">{label}</span>
           </NavLink>
         ))}
-        
+
         <button
           type="button"
           onClick={() => {
@@ -103,7 +103,7 @@ function SidebarContent({ onNavigate, onOpenFeedback, className }: SidebarConten
             Last synced 2 hours ago from 47 monitored markets
           </p>
           <p className="mt-2.5 text-[11px] leading-relaxed text-muted">
-              Free, non-commercial. Built for social good. We forecast, we don&apos;t trade.
+            Free, non-commercial. Built for social good. We forecast, we don&apos;t trade.
           </p>
         </div>
       </div>
@@ -170,18 +170,21 @@ export function AppShell() {
             const mockItem = mockCommodities.find((c) => c.id === item.id) as any || {}
             const anyItem = item as any
             const rawName = item.name || mockItem.name || '';
-              return {
-                ...mockItem,
-                ...item,
-                name: toTitleCase(rawName),
-                image: getCommodityImage(item.id),
-                todayPrice: anyItem.todayPrice || mockItem.todayPrice || 0,
-                changePct: anyItem.changePct || mockItem.changePct || 0,
-                forecastPrice: anyItem.forecastPrice || mockItem.forecastPrice || 0,
-                vendor: anyItem.vendor || mockItem.vendor || '',
-                category: getCommodityCategory(item.id),
-                unit: item.category || item.quantity || (mockItem as any).unit || 'unit',
-              }
+            const todayPrice = anyItem.todayPrice || mockItem.todayPrice || 0
+            const changePct = anyItem.changePct || mockItem.changePct || 0
+            const forecastPrice = todayPrice * (1 + changePct / 100)
+            return {
+              ...mockItem,
+              ...item,
+              name: toTitleCase(rawName),
+              image: getCommodityImage(item.id),
+              todayPrice,
+              changePct,
+              forecastPrice,
+              vendor: anyItem.vendor || mockItem.vendor || '',
+              category: getCommodityCategory(item.id),
+              unit: item.category || item.quantity || (mockItem as any).unit || 'unit',
+            }
           })
           setCommoditiesList(mapped as any)
         } else {
@@ -307,7 +310,7 @@ export function AppShell() {
               if (!isSubmittingFeedback) setFeedbackOpen(false)
             }}
           />
-          
+
           {/* Modal Content */}
           <div className="relative w-full max-w-md transform overflow-hidden rounded-hero border border-border bg-background p-6 shadow-elevated transition-all">
             <button
@@ -363,13 +366,13 @@ export function AppShell() {
 
                   <div>
                     <label className="block text-xs font-bold text-foreground mb-2">
-                      How do you feel about food prices? (Optional)
+                      Do you find the predictions helpful? (Optional)
                     </label>
                     <div className="grid grid-cols-3 gap-2">
                       {[
-                        { value: 'too_low', label: 'Too Low', emoji: '📉' },
-                        { value: 'just_right', label: 'Just Right', emoji: '👌' },
-                        { value: 'too_high', label: 'Too High', emoji: '📈' },
+                        { value: 'too_low', label: 'No', emoji: '👎' },
+                        { value: 'too_high', label: 'Somewhat', emoji: '😐' },
+                        { value: 'just_right', label: 'Yes', emoji: '👍' },
                       ].map((opt) => (
                         <button
                           key={opt.value}
@@ -399,7 +402,7 @@ export function AppShell() {
                       rows={4}
                       value={feedbackMessage}
                       onChange={(e) => setFeedbackMessage(e.target.value)}
-                      placeholder="Enter suggestions, report data issues, or leave a general comment..."
+                      placeholder="Enter suggestions or requests, report data issues, or leave a general comment..."
                       className="w-full rounded-card border border-border bg-surface px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted focus:border-brand-green focus:outline-none focus:ring-1 focus:ring-brand-green focus:bg-background"
                     />
                   </div>

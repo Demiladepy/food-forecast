@@ -61,6 +61,7 @@ interface AdminStatsResponse {
   model_version: string;
   last_sync_time: string;
   commodity_stats: AdminCommodityStat[];
+  suggestions?: AdminSuggestionStat[];
 }
 
 interface AdminCommodityStat {
@@ -69,4 +70,12 @@ interface AdminCommodityStat {
   views: number;
   helpful: number;
   unhelpful: number;
+}
+
+interface AdminSuggestionStat {
+  id: string;
+  commodity: string | null;
+  sentiment: string | null;
+  message: string | null;
+  created_at: string;
 }

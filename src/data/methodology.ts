@@ -14,21 +14,10 @@ export interface AudienceCard {
   body: string
 }
 
-export interface Testimonial {
-  quote: string
-  name: string
-  role: string
-}
-
 export interface DataSourceItem {
   id: 'updated' | 'auditable' | 'independent'
   title: string
   body: string
-}
-
-export interface TrackRecordStat {
-  value: string
-  label: string
 }
 
 export const methodologyIntro =
@@ -96,27 +85,6 @@ export const audienceCards: AudienceCard[] = [
 export const audienceFooter =
   'If a single family avoids one bad market trip a month because of what they read here, this project will have paid for itself a thousand times over.'
 
-export const testimonials: Testimonial[] = [
-  {
-    quote:
-      'I stopped buying tomatoes in bulk on the wrong week. The forecast told me to wait five days. I saved almost ₦4,000 on one basket.',
-    name: 'Mrs. Adunni',
-    role: 'Mother of three, Ikorodu',
-  },
-  {
-    quote:
-      'I price jollof platters weeks ahead for events. Food Forecast helps me quote clients without eating the margin when rice jumps.',
-    name: 'Tunde',
-    role: 'Caterer, Lekki',
-  },
-  {
-    quote:
-      'When I write about food inflation, I need a source I can cite. The breakdown of why prices move is what makes me trust this.',
-    name: 'Ifeoma',
-    role: 'Journalist, BusinessDay',
-  },
-]
-
 export const dataSources: DataSourceItem[] = [
   {
     id: 'updated',
@@ -133,13 +101,6 @@ export const dataSources: DataSourceItem[] = [
     title: 'Independent',
     body: 'No commercial partners, no government funding strings. Built and reviewed at NitHub, University of Lagos.',
   },
-]
-
-export const trackRecordStats: TrackRecordStat[] = [
-  { value: '82%', label: 'Direction accuracy across last 6 months' },
-  { value: '±1.4%', label: 'Median magnitude error per cycle' },
-  { value: '47', label: 'Markets continuously monitored' },
-  { value: '0', label: 'Trades placed by us, ever' },
 ]
 
 export const methodologyFooter =

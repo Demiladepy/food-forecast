@@ -11,6 +11,7 @@ export function AdminPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(localStorage.getItem('isAdmin') === 'true')
   const [error, setError] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<'commodities' | 'feedback'>('commodities')
 
   // Auth States
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAdmin') === 'true')
@@ -249,8 +250,37 @@ export function AdminPage() {
             />
           </section>
 
-          {/* Main Stats table */}
-          <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
+          {/* Tabs Navigation */}
+          <div className="flex border-b border-border mt-6 mb-6">
+            <button
+              type="button"
+              onClick={() => setActiveTab('commodities')}
+              className={cn(
+                'px-4 py-2.5 text-sm font-bold border-b-2 -mb-px transition-all cursor-pointer',
+                activeTab === 'commodities'
+                  ? 'border-brand-green text-brand-green'
+                  : 'border-transparent text-muted hover:text-foreground'
+              )}
+            >
+              Commodity Metrics
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('feedback')}
+              className={cn(
+                'px-4 py-2.5 text-sm font-bold border-b-2 -mb-px transition-all cursor-pointer',
+                activeTab === 'feedback'
+                  ? 'border-brand-green text-brand-green'
+                  : 'border-transparent text-muted hover:text-foreground'
+              )}
+            >
+              User Suggestions ({stats.suggestions ? stats.suggestions.length : 0})
+            </button>
+          </div>
+
+          {activeTab === 'commodities' ? (
+            /* Main Stats table */
+            <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
               <div>
                 <h2 className="text-lg font-bold tracking-tight text-foreground">Commodity Performance</h2>
@@ -333,70 +363,68 @@ export function AdminPage() {
               </table>
             </div>
           </section>
+          ) : (
+            /* User Suggestions Section */
+            <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
+              <div className="mb-6">
+                <h2 className="text-lg font-bold tracking-tight text-foreground">User Suggestions & Support Feedback</h2>
+                <p className="mt-1 text-sm text-muted">
+                  Viewing messages, suggestions, and support queries sent by users.
+                </p>
+              </div>
 
-          {/* User Suggestions Section */}
-          <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8 mt-6">
-            <div className="mb-6">
-              <h2 className="text-lg font-bold tracking-tight text-foreground">User Suggestions & Support Feedback</h2>
-              <p className="mt-1 text-sm text-muted">
-                Viewing messages, suggestions, and support queries sent by users.
-              </p>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[500px] border-collapse text-left text-sm text-foreground">
-                <thead>
-                  <tr className="border-b border-border text-[11px] font-bold tracking-wider text-muted uppercase">
-                    <th className="pb-3 pr-4">Date</th>
-                    <th className="pb-3 px-4">Commodity</th>
-                    <th className="pb-3 px-4">Sentiment</th>
-                    <th className="pb-3 pl-4">Message</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stats.suggestions && stats.suggestions.length > 0 ? (
-                    stats.suggestions.map((suggestion) => (
-                      <tr key={suggestion.id} className="border-b border-border/50 hover:bg-surface-soft/40 transition-colors">
-                        <td className="py-3.5 pr-4 whitespace-nowrap text-muted text-xs">
-                          {formatDateTime(suggestion.created_at)}
-                        </td>
-                        <td className="py-3.5 px-4 font-semibold">
-                          {suggestion.commodity ? suggestion.commodity : <span className="text-muted/65">—</span>}
-                        </td>
-                        <td className="py-3.5 px-4">
-                          {suggestion.sentiment ? (
-                            <span
-                              className={cn(
-                                'inline-flex items-center rounded-pill px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider',
-                                suggestion.sentiment === 'just_right'
-                                  ? 'bg-confidence-high/10 text-brand-green'
-                                  : suggestion.sentiment === 'too_high'
-                                  ? 'bg-danger/10 text-danger'
-                                  : 'bg-indigo-500/10 text-indigo-500'
-                              )}
-                            >
-                              {suggestion.sentiment.replace('_', ' ')}
-                            </span>
-                          ) : (
-                            <span className="text-muted/65">—</span>
-                          )}
-                        </td>
-                        <td className="py-3.5 pl-4 text-xs leading-relaxed text-foreground max-w-sm break-words">
-                          {suggestion.message}
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[500px] border-collapse text-left text-sm text-foreground">
+                  <thead>
+                    <tr className="border-b border-border text-[11px] font-bold tracking-wider text-muted uppercase">
+                      <th className="pb-3 pr-4">Date</th>
+                      <th className="pb-3 px-4">Helpful?</th>
+                      <th className="pb-3 pl-4">Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stats.suggestions && stats.suggestions.length > 0 ? (
+                      stats.suggestions.map((suggestion) => (
+                        <tr key={suggestion.id} className="border-b border-border/50 hover:bg-surface-soft/40 transition-colors">
+                          <td className="py-3.5 pr-4 whitespace-nowrap text-muted text-xs">
+                            {formatDateTime(suggestion.created_at)}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            {suggestion.sentiment ? (
+                              <span
+                                className={cn(
+                                  'inline-flex items-center rounded-pill px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider',
+                                  suggestion.sentiment === 'just_right'
+                                    ? 'bg-confidence-high/10 text-brand-green'
+                                    : suggestion.sentiment === 'too_high'
+                                    ? 'bg-amber/10 text-amber'
+                                    : 'bg-danger/10 text-danger'
+                                )}
+                              >
+                                {suggestion.sentiment === 'just_right' ? '👍 Yes' :
+                                 suggestion.sentiment === 'too_high' ? '😐 Somewhat' : '👎 No'}
+                              </span>
+                            ) : (
+                              <span className="text-muted/65">—</span>
+                            )}
+                          </td>
+                          <td className="py-3.5 pl-4 text-xs leading-relaxed text-foreground max-w-sm break-words">
+                            {suggestion.message}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={3} className="py-8 text-center text-muted">
+                          No user suggestions recorded yet.
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={4} className="py-8 text-center text-muted">
-                        No user suggestions recorded yet.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </section>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
         </>
       )}
     </div>

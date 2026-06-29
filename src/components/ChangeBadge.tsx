@@ -1,4 +1,4 @@
-import { TrendingDown, TrendingUp } from 'lucide-react'
+import { TrendingDown, TrendingUp, Minus } from 'lucide-react'
 import { cn } from '../lib/utils'
 
 export interface ChangeBadgeProps {
@@ -7,15 +7,16 @@ export interface ChangeBadgeProps {
 }
 
 export function ChangeBadge({ changePct, className }: ChangeBadgeProps) {
-  const isRising = changePct >= 0
-  const Icon = isRising ? TrendingUp : TrendingDown
+  const isZero = changePct === 0
+  const isRising = changePct > 0
+  const Icon = isZero ? Minus : isRising ? TrendingUp : TrendingDown
   const formatted = `${isRising ? '+' : ''}${Number.isInteger(changePct) ? changePct : changePct.toFixed(1)}%`
 
   return (
     <span
       className={cn(
         'inline-flex items-center gap-1 rounded-pill px-2.5 py-1 text-[11px] font-bold text-white',
-        isRising ? 'bg-increase' : 'bg-decrease',
+        isZero ? 'bg-muted' : isRising ? 'bg-increase' : 'bg-decrease',
         className,
       )}
     >
@@ -24,3 +25,4 @@ export function ChangeBadge({ changePct, className }: ChangeBadgeProps) {
     </span>
   )
 }
+

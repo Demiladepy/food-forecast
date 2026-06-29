@@ -39,14 +39,16 @@ export function CommodityDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [feedbackGiven, setFeedbackGiven] = useState<'yes' | 'no' | null>(null)
-  const { commodities, isLoading: isListLoading } = useOutletContext<{ commodities: Commodity[], isLoading: boolean }>()
+  const { commodities, isLoading: isListLoading, error } = useOutletContext<{ commodities: Commodity[], isLoading: boolean, error: string | null }>()
 
   const [liveForecast, setLiveForecast] = useState<PredictFoodPriceResponse | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [forecastError, setForecastError] = useState<string | null>(null)
 
   // Reset feedback state when the active commodity changes
   useEffect(() => {
     setFeedbackGiven(null)
+    setForecastError(null)
     if (id) {
       recordCommodityClick(id).catch((err) => console.error('Failed to record view:', err))
       
@@ -59,8 +61,9 @@ export function CommodityDetailPage() {
         .then((data) => {
           setLiveForecast(data)
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.error('Failed to fetch live prediction:', err)
+          setForecastError(err.response?.data?.message || err.message || 'Failed to fetch live prediction from the server.')
         })
         .finally(() => {
           setIsLoading(false)
@@ -148,6 +151,24 @@ export function CommodityDetailPage() {
     )
   }
 
+  if (error) {
+    return (
+      <div className="py-12 text-center max-w-md mx-auto">
+        <div className="flex size-12 items-center justify-center rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 mx-auto">
+          <ArrowLeft className="size-5" />
+        </div>
+        <h2 className="text-xl font-bold text-foreground mt-4">Database Connection Failed</h2>
+        <p className="mt-2 text-muted">{error}</p>
+        <Link
+          to="/commodities"
+          className="mt-6 inline-flex items-center gap-2 rounded-pill bg-brand-green px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-green-hover"
+        >
+          <ArrowLeft className="size-4" /> Back to Commodities
+        </Link>
+      </div>
+    )
+  }
+
   if (!commodity) {
     return (
       <div className="py-12 text-center">
@@ -164,26 +185,23 @@ export function CommodityDetailPage() {
   }
 
   // Calculate values
-  const isBackendMock = liveForecast && 
-    (liveForecast as any).request_echo?.food_item === 'yam' && 
-    commodity.id !== 'yam-tuber';
-
-  const hasForecast = (!!liveForecast && !isBackendMock) || !!commodity.forecast
+  const hasForecast = !!liveForecast && !forecastError;
   
-  const forecastPercent = (liveForecast && !isBackendMock)
+  const forecastPercent = hasForecast
     ? (liveForecast.price_change ?? liveForecast.predicted_price_change_percent ?? 0)
-    : (commodity.forecast ? (commodity.forecast.predicted_price_change_percent ?? 0) : (commodity.changePct ?? 0))
+    : 0;
     
-  const forecastPrice = (liveForecast && !isBackendMock)
-    ? commodity.todayPrice * (1 + (liveForecast.price_change ?? liveForecast.predicted_price_change_percent ?? 0) / 100)
-    : (commodity.forecastPrice ?? commodity.todayPrice ?? 0)
+  const forecastPrice = hasForecast
+    ? commodity.todayPrice * (1 + forecastPercent / 100)
+    : commodity.todayPrice;
     
-  const direction = forecastPercent >= 0 ? 'increase' : 'decrease'
+  const direction = forecastPercent >= 0 ? 'increase' : 'decrease';
 
-  const explanationText = (!isBackendMock && liveForecast?.summary?.text)
-    || (!isBackendMock && liveForecast?.season_remark)
-    || commodity.forecast?.summary 
-    || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next month.`
+  const explanationText = hasForecast
+    ? (liveForecast.summary?.text || liveForecast.season_remark || `${commodity.name} is expected to ${direction} by about ${Math.abs(forecastPercent).toFixed(1)}% over the next month.`)
+    : (forecastError 
+        ? "Live forecast unavailable. Prediction engine is currently offline." 
+        : "Loading live forecast...");
 
   interface NormalizedDriver {
     name: string
@@ -192,34 +210,25 @@ export function CommodityDetailPage() {
     subtitle: string
   }
 
-  const useLive = liveForecast && !isBackendMock;
-
-  const driversList: NormalizedDriver[] = (useLive && liveForecast.factors)
+  const driversList: NormalizedDriver[] = (hasForecast && liveForecast.factors)
     ? liveForecast.factors.map((f: any) => ({
         name: f.name,
         impact: f.change,
         isUp: f.change >= 0,
         subtitle: f.reason,
       }))
-    : (useLive && liveForecast.xai_explanation?.top_driving_features)
+    : (hasForecast && liveForecast.xai_explanation?.top_driving_features)
     ? liveForecast.xai_explanation.top_driving_features.map((f: any) => ({
         name: formatFeatureName(f.feature),
         impact: f.impact_percentage,
         isUp: f.direction === 'increase',
         subtitle: `Current Value: ${f.current_value}`,
       }))
-    : (commodity && commodity.forecast?.xai_explanation?.top_driving_features)
-    ? commodity.forecast.xai_explanation.top_driving_features.map((f: any) => ({
-        name: formatFeatureName(f.feature),
-        impact: f.impact_percentage,
-        isUp: f.direction === 'increase',
-        subtitle: `Current Value: ${f.current_value}`,
-      }))
-    : []
+    : [];
 
-  const baseMarketTrend = (liveForecast && !isBackendMock)
+  const baseMarketTrend = hasForecast
     ? (liveForecast.xai_explanation?.base_market_trend ?? 0)
-    : (commodity.forecast?.xai_explanation?.base_market_trend || 0)
+    : 0;
 
 
 
@@ -234,6 +243,16 @@ export function CommodityDetailPage() {
           <ArrowLeft className="size-3.5" strokeWidth={2.5} /> All commodities
         </Link>
       </div>
+
+      {/* Forecast Error warning */}
+      {forecastError && (
+        <div className="rounded-card border border-rose-500/20 bg-rose-500/5 p-4 text-sm text-rose-600 dark:text-rose-400 flex items-start gap-3">
+          <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-rose-500/10 font-bold text-xs">!</span>
+          <div>
+            <strong className="font-bold">Live Prediction Engine Offline:</strong> {forecastError}
+          </div>
+        </div>
+      )}
 
       {/* Main card panel */}
       <div className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
@@ -277,30 +296,42 @@ export function CommodityDetailPage() {
             </span>
           </div>
 
-          <div className="flex-1 rounded-card border border-border bg-surface-soft p-5">
-            <div className="flex items-center justify-between gap-2">
-              <p className="text-[10px] font-bold tracking-wider text-muted uppercase">In 1 month</p>
-              <span
-                className={cn(
-                  'inline-flex items-center gap-1 rounded-pill px-2.5 py-0.5 text-[11px] font-bold',
-                  direction === 'increase'
-                    ? 'bg-increase/10 text-increase'
-                    : 'bg-decrease/10 text-decrease',
-                )}
-              >
-                {direction === 'increase' ? (
-                  <ArrowUp className="size-3" strokeWidth={3} />
-                ) : (
-                  <ArrowDown className="size-3" strokeWidth={3} />
-                )}
-                {direction === 'increase' ? '+' : ''}
-                {forecastPercent.toFixed(1)}%
-              </span>
-            </div>
-            <p className="mt-1 text-2xl font-bold text-foreground">
-              {formatNGN(forecastPrice)}
-            </p>
-            <p className="mt-0.5 text-xs text-muted">{commodity.unit}</p>
+          <div className="flex-1 rounded-card border border-border bg-surface-soft p-5 flex flex-col justify-center">
+            {hasForecast ? (
+              <>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-[10px] font-bold tracking-wider text-muted uppercase">In 1 month</p>
+                  <span
+                    className={cn(
+                      'inline-flex items-center gap-1 rounded-pill px-2.5 py-0.5 text-[11px] font-bold',
+                      direction === 'increase'
+                        ? 'bg-increase/10 text-increase'
+                        : 'bg-decrease/10 text-decrease',
+                    )}
+                  >
+                    {direction === 'increase' ? (
+                      <ArrowUp className="size-3" strokeWidth={3} />
+                    ) : (
+                      <ArrowDown className="size-3" strokeWidth={3} />
+                    )}
+                    {direction === 'increase' ? '+' : ''}
+                    {forecastPercent.toFixed(1)}%
+                  </span>
+                </div>
+                <p className="mt-1 text-2xl font-bold text-foreground">
+                  {formatNGN(forecastPrice)}
+                </p>
+                <p className="mt-0.5 text-xs text-muted">{commodity.unit}</p>
+              </>
+            ) : (
+              <>
+                <p className="text-[10px] font-bold tracking-wider text-muted uppercase">In 1 month</p>
+                <p className="mt-2.5 text-sm font-semibold text-muted">
+                  Forecast Unavailable
+                </p>
+                <p className="mt-0.5 text-xs text-muted">Connection offline</p>
+              </>
+            )}
           </div>
         </div>
 

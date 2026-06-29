@@ -122,6 +122,7 @@ export function AppShell() {
   const location = useLocation()
   const [commoditiesList, setCommoditiesList] = useState<Commodity[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -192,12 +193,15 @@ export function AppShell() {
         }
       })
       .catch((err) => {
-        console.error("Failed to load commodities from backend, using fallback mock data:", err)
-        // Optionally fall back to mockCommodities if server is dead
+        console.error("Failed to load commodities from backend:", err)
+        setError("Failed to load commodities from database. Please check your backend connection.")
+        // Decommissioned mock fallback:
+        /*
         setCommoditiesList(mockCommodities.map(item => ({
           ...item,
           name: toTitleCase(item.name)
         })) as any)
+        */
       })
       .finally(() => {
         setIsLoading(false)
@@ -295,7 +299,7 @@ export function AppShell() {
 
         <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-background">
           <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-7 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-            <Outlet context={{ commodities: commoditiesList, isLoading }} />
+            <Outlet context={{ commodities: commoditiesList, isLoading, error }} />
           </main>
         </div>
       </div>

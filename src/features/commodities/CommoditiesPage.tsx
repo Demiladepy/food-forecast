@@ -17,7 +17,7 @@ const CATEGORIES = [
 
 export function CommoditiesPage() {
   const navigate = useNavigate()
-  const { commodities, isLoading } = useOutletContext<{ commodities: Commodity[], isLoading: boolean }>()
+  const { commodities, isLoading, error } = useOutletContext<{ commodities: Commodity[], isLoading: boolean, error: string | null }>()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('ALL')
   const [data, setData] = useState<any[]>([])
@@ -75,6 +75,20 @@ export function CommoditiesPage() {
   return (
     <div className="page-stack">
       <PageHeader title="Welcome to Food Forecast" action={<GuestChip compact />} />
+
+      {error && (
+        <div className="rounded-card border border-rose-500/20 bg-rose-500/5 p-5 text-sm md:text-base flex items-start gap-4">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400">
+            <Search className="size-4" />
+          </div>
+          <div>
+            <h3 className="font-bold text-rose-800 dark:text-rose-200">Database Connection Failed</h3>
+            <p className="mt-1 leading-relaxed text-rose-700/80 dark:text-rose-300/80">
+              {error}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Search and Category Filter Pills */}
       <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

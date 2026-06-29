@@ -4,7 +4,6 @@ import {
   Database,
   Heart,
   Lock,
-  Quote,
   RefreshCw,
   Shield,
   Sparkles,
@@ -18,8 +17,6 @@ import {
   forecastSteps,
   methodologyFooter,
   methodologyIntro,
-  testimonials,
-  trackRecordStats,
   trustPoints,
   whyWeBuiltClosing,
   whyWeBuiltParagraphs,
@@ -120,29 +117,6 @@ export function MethodologyPage() {
       </section>
 
       <section>
-        <h2 className="text-lg font-bold tracking-tight text-foreground">
-          Voices from the market
-        </h2>
-        <div className="mt-4 grid gap-3 sm:mt-5 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
-          {testimonials.map((item) => (
-            <article
-              key={item.name}
-              className="flex h-full flex-col rounded-card border border-border bg-surface p-4 shadow-sm sm:p-5"
-            >
-              <Quote className="size-5 text-brand-green" strokeWidth={2} aria-hidden />
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                &quot;{item.quote}&quot;
-              </p>
-              <div className="mt-4 sm:mt-5">
-                <p className="text-sm font-bold text-foreground">{item.name}</p>
-                <p className="mt-0.5 text-xs text-muted">{item.role}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section>
         <IconSectionHeader
           icon={Database}
           title="Where the numbers come from"
@@ -164,26 +138,6 @@ export function MethodologyPage() {
               </article>
             )
           })}
-        </div>
-      </section>
-
-      <section>
-        <p className="text-[11px] font-bold tracking-[0.14em] text-muted uppercase">
-          Our track record
-        </p>
-        <div className="mt-3 rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
-          <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-border">
-            {trackRecordStats.map((stat) => (
-              <div key={stat.label} className="min-w-0 lg:px-6 lg:first:pl-0">
-                <p className="text-2xl font-bold leading-none tracking-tight text-foreground sm:text-[1.75rem]">
-                  {stat.value}
-                </p>
-                <p className="mt-2 text-[11px] leading-relaxed text-muted sm:text-xs">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

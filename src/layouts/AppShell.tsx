@@ -315,14 +315,14 @@ export function AppShell() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-brand-dark/40 backdrop-blur-sm transition-opacity duration-300"
+            className="absolute inset-0 bg-brand-dark/40 backdrop-blur-sm animate-backdrop-in"
             onClick={() => {
               if (!isSubmittingFeedback) setFeedbackOpen(false)
             }}
           />
 
           {/* Modal Content */}
-          <div className="relative w-full max-w-md transform overflow-hidden rounded-hero border border-border bg-background p-6 shadow-elevated transition-all">
+          <div className="relative w-full max-w-md transform overflow-hidden rounded-hero border border-border bg-background p-6 shadow-elevated animate-modal-in">
             <button
               type="button"
               onClick={() => setFeedbackOpen(false)}

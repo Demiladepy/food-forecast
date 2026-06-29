@@ -91,7 +91,7 @@ export function CommoditiesPage() {
       )}
 
       {/* Search and Category Filter Pills */}
-      <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between animate-stagger-1">
         <div className="w-full sm:max-w-xs">
           <SearchBar
             value={searchQuery}
@@ -123,7 +123,7 @@ export function CommoditiesPage() {
         </div>
       </section>
 
-      <section>
+      <section className="animate-stagger-2">
         <div className="mb-4 flex flex-col gap-2 sm:mb-5 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-3">
           <div className="min-w-0">
             <h2 className="text-lg font-bold tracking-tight text-foreground">All commodities</h2>

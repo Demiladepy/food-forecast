@@ -42,7 +42,7 @@ export function MethodologyPage() {
     <div className="page-stack pb-4">
       <PageHeader title="Welcome to Food Forecast" action={<GuestChip compact />} />
 
-      <section className="space-y-3 sm:space-y-4">
+      <section className="space-y-3 sm:space-y-4 animate-stagger-1">
         <SectionLabel>How the forecast works</SectionLabel>
         <h2 className="font-display text-[1.45rem] leading-[1.18] tracking-tight text-foreground sm:text-[1.85rem] md:text-[2.35rem]">
           Built so a market trader, a student, and a mother can all{' '}
@@ -53,7 +53,7 @@ export function MethodologyPage() {
         </p>
       </section>
 
-      <section className="rounded-card border border-border bg-surface-soft p-5 sm:p-6 md:p-8">
+      <section className="rounded-card border border-border bg-surface-soft p-5 sm:p-6 md:p-8 animate-stagger-2">
         <IconSectionHeader icon={Heart} title="Why we built this" />
         <div className="mt-4 space-y-4 text-sm leading-relaxed text-muted sm:mt-5">
           {whyWeBuiltParagraphs.map((paragraph) => (
@@ -63,7 +63,7 @@ export function MethodologyPage() {
         </div>
       </section>
 
-      <section>
+      <section className="animate-stagger-3">
         <h2 className="text-lg font-bold tracking-tight text-foreground">
           How the forecast works
         </h2>
@@ -86,7 +86,7 @@ export function MethodologyPage() {
         </div>
       </section>
 
-      <section className="rounded-card border border-border bg-surface-soft p-5 sm:p-6 md:p-8">
+      <section className="rounded-card border border-border bg-surface-soft p-5 sm:p-6 md:p-8 animate-stagger-4">
         <IconSectionHeader icon={Shield} title="How we earn your trust" />
         <ul className="mt-4 space-y-4 sm:mt-5">
           {trustPoints.map((point) => (
@@ -98,7 +98,7 @@ export function MethodologyPage() {
         </ul>
       </section>
 
-      <section className="rounded-card bg-brand-green p-5 text-white shadow-sm sm:rounded-hero sm:p-6 md:p-8">
+      <section className="rounded-card bg-brand-green p-5 text-white shadow-sm sm:rounded-hero sm:p-6 md:p-8 animate-stagger-5">
         <div className="flex items-center gap-2.5">
           <Users className="size-[18px] shrink-0" strokeWidth={2} aria-hidden />
           <h2 className="text-base font-bold">Who this is for</h2>

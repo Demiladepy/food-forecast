@@ -12,7 +12,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { cn } from '../lib/utils'
 import { commodities as mockCommodities } from '../data/commodities'
@@ -120,6 +120,7 @@ export function AppShell() {
   const [feedbackSuccess, setFeedbackSuccess] = useState(false)
   const [feedbackError, setFeedbackError] = useState('')
   const location = useLocation()
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [commoditiesList, setCommoditiesList] = useState<Commodity[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -211,6 +212,9 @@ export function AppShell() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileNavOpen(false)
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0
+    }
   }, [location.pathname])
 
   useEffect(() => {
@@ -297,9 +301,11 @@ export function AppShell() {
           <div className="size-11 shrink-0" aria-hidden />
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-background">
+        <div ref={scrollContainerRef} className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-background">
           <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-7 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-            <Outlet context={{ commodities: commoditiesList, isLoading, error }} />
+            <div key={location.pathname} className="animate-page-enter">
+              <Outlet context={{ commodities: commoditiesList, isLoading, error }} />
+            </div>
           </main>
         </div>
       </div>

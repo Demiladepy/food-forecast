@@ -70,6 +70,7 @@ export function HomePage() {
       <section
         className={cn(
           'relative min-h-[21rem] overflow-hidden rounded-card sm:min-h-[23rem] sm:rounded-hero lg:min-h-[25rem]',
+          'animate-stagger-1'
         )}
       >
         <OptimizedImage
@@ -113,7 +114,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 animate-stagger-2">
         <StatCard
           label="Rising"
           value={
@@ -159,7 +160,7 @@ export function HomePage() {
         />
       </section>
 
-      <section>
+      <section className="animate-stagger-3">
         <div className="mb-4 flex flex-col gap-2 sm:mb-5 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-3">
           <div className="min-w-0">
             <h2 className="text-lg font-bold tracking-tight text-foreground">

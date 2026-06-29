@@ -71,4 +71,56 @@
       gap: var(--spacing-section);
     }
   }
+
+  /* Page transitions and stagger animations */
+  @keyframes pageEnter {
+    0% {
+      opacity: 0;
+      transform: translateY(12px) scale(0.985);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes slideUpFade {
+    0% {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-page-enter {
+    animation: pageEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .animate-stagger-1 {
+    animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 40ms;
+  }
+
+  .animate-stagger-2 {
+    animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 80ms;
+  }
+
+  .animate-stagger-3 {
+    animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 120ms;
+  }
+
+  .animate-stagger-4 {
+    animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 160ms;
+  }
+
+  .animate-stagger-5 {
+    animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 200ms;
+  }
 }

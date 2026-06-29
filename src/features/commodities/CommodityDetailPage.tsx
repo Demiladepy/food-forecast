@@ -255,7 +255,7 @@ export function CommodityDetailPage() {
       )}
 
       {/* Main card panel */}
-      <div className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
+      <div className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8 animate-stagger-1">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-brand bg-accent-muted overflow-hidden border border-border p-1">
@@ -345,7 +345,7 @@ export function CommodityDetailPage() {
 
       {/* Why this prediction section */}
       {hasForecast && driversList.length > 0 && (
-        <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
+        <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8 animate-stagger-2">
           <h2 className="text-lg font-bold tracking-tight text-foreground">Why this prediction</h2>
           <p className="mt-1 text-sm text-muted">
             Ordered by how much each factor moves the forecast.
@@ -464,7 +464,7 @@ export function CommodityDetailPage() {
       */}
 
       {/* Feedback Widget */}
-      <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 text-center">
+      <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 text-center animate-stagger-3">
         {feedbackGiven ? (
           <div className="flex flex-col items-center justify-center gap-2 py-3 text-brand-green">
             <Check className="size-6 border border-brand-green rounded-full p-1" strokeWidth={3} />
@@ -504,7 +504,7 @@ export function CommodityDetailPage() {
       </section>
 
       {/* Recommendations */}
-      <section>
+      <section className="animate-stagger-4">
         <h2 className="mb-4 text-lg font-bold tracking-tight text-foreground">
           Other commodities to watch
         </h2>

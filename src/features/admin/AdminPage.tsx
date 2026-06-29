@@ -214,7 +214,7 @@ export function AdminPage() {
       {stats && (
         <>
           {/* Overview Stats Grid */}
-          <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
+          <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4 animate-stagger-1">
             <StatCard
               label="Total Page Clicks"
               value={stats.total_views.toLocaleString()}
@@ -251,7 +251,7 @@ export function AdminPage() {
           </section>
 
           {/* Tabs Navigation */}
-          <div className="flex border-b border-border mt-6 mb-6">
+          <div className="flex border-b border-border mt-6 mb-6 animate-stagger-2">
             <button
               type="button"
               onClick={() => setActiveTab('commodities')}
@@ -280,7 +280,7 @@ export function AdminPage() {
 
           {activeTab === 'commodities' ? (
             /* Main Stats table */
-            <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
+            <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8 animate-stagger-3">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
               <div>
                 <h2 className="text-lg font-bold tracking-tight text-foreground">Commodity Performance</h2>
@@ -365,7 +365,7 @@ export function AdminPage() {
           </section>
           ) : (
             /* User Suggestions Section */
-            <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8">
+            <section className="rounded-card border border-border bg-surface p-5 shadow-sm sm:p-6 md:p-8 animate-stagger-3">
               <div className="mb-6">
                 <h2 className="text-lg font-bold tracking-tight text-foreground">User Suggestions & Support Feedback</h2>
                 <p className="mt-1 text-sm text-muted">

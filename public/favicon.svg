@@ -1,13 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
-  <!-- Rounded green background of the app brand -->
-  <rect width="512" height="512" rx="140" fill="#1fa055" />
-  
-  <!-- Centered Lucide Sprout icon in white -->
-  <g transform="translate(112, 112) scale(12)" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="M7 20h10" />
-    <path d="M10 20c0-2.76 2.5-5 5.5-5" />
-    <path d="M15 15c2.76 0 5 2.24 5 5" />
-    <path d="M12 15c-1.34-3.99-4.88-5.99-9-5.99" />
-    <path d="M12 15c1.34-3.99 4.88-5.99 9-5.99" />
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="24 24 40 40" fill="none">
+  <!-- Brand logo from design file -->
+  <path d="M52.3258 24.0552H35.6636C29.222 24.0552 24 29.2771 24 35.7188V52.381C24 58.8226 29.222 64.0446 35.6636 64.0446H52.3258C58.7674 64.0446 63.9894 58.8226 63.9894 52.381V35.7188C63.9894 29.2771 58.7674 24.0552 52.3258 24.0552Z" fill="#2C9653"/>
+  <path opacity="0.95" d="M43.9952 51.5483C43.9952 44.8834 38.9965 42.384 35.6641 42.384C35.6641 47.3827 38.9965 51.5483 43.9952 51.5483Z" fill="#FBFCF8"/>
+  <path d="M43.9951 51.5483C43.9951 44.8834 48.9938 42.384 52.3262 42.384C52.3262 47.3827 48.9938 51.5483 43.9951 51.5483Z" fill="#F5B13D"/>
+  <path d="M43.9951 52.3813V40.7178" stroke="#FBFCF8" stroke-width="1.66625" stroke-linecap="round"/>
+  <path d="M33.9971 37.3849L38.9957 34.8856L43.9944 36.5518L48.9931 32.3862L53.9918 34.0525" stroke="#FBFCF8" stroke-width="1.66625" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M53.9924 35.7189C54.9126 35.7189 55.6586 34.9729 55.6586 34.0527C55.6586 33.1325 54.9126 32.3865 53.9924 32.3865C53.0722 32.3865 52.3262 33.1325 52.3262 34.0527C52.3262 34.9729 53.0722 35.7189 53.9924 35.7189Z" fill="#F5B13D"/>
 </svg>

@@ -185,7 +185,7 @@ export function AppShell() {
               forecastPrice,
               vendor: anyItem.vendor || mockItem.vendor || '',
               category: getCommodityCategory(item.id),
-              unit: item.category || item.quantity || (mockItem as any).unit || 'unit',
+              unit: (item as any).unit || item.quantity || (mockItem as any).unit || 'unit',
             }
           })
           setCommoditiesList(mapped as any)

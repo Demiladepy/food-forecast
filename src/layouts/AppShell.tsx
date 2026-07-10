@@ -6,7 +6,6 @@ import {
   RefreshCw,
   Sprout,
   X,
-  ShieldCheck,
   MessageSquare,
   Send,
   CheckCircle2,
@@ -33,7 +32,6 @@ const navItems: NavItem[] = [
   { to: '/', label: 'Home', icon: Home, end: true },
   { to: '/commodities', label: 'Commodities', icon: BarChart3 },
   { to: '/how-it-works', label: 'How the forecast works', icon: HelpCircle },
-  { to: '/admin', label: 'Admin Console', icon: ShieldCheck },
 ]
 
 interface SidebarContentProps {
